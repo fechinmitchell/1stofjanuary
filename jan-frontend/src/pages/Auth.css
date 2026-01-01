@@ -1,0 +1,194 @@
+.auth {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .auth-content {
+    width: 100%;
+    max-width: 400px;
+    z-index: 1;
+  }
+  
+  .auth-title {
+    font-size: clamp(1.75rem, 5vw, 2.25rem);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: var(--space-sm);
+    color: var(--text-dark);
+  }
+  
+  .auth-subtitle {
+    text-align: center;
+    color: var(--text-medium);
+    margin-bottom: var(--space-xl);
+  }
+  
+  .auth-google {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    background: var(--bg-white);
+    color: var(--text-dark);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  
+  .auth-google:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+  
+  .google-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    margin: var(--space-lg) 0;
+  }
+  
+  .auth-divider::before,
+  .auth-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--text-light);
+  }
+  
+  .auth-divider span {
+    padding: 0 var(--space-md);
+    color: var(--text-light);
+    font-size: 0.875rem;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  
+  .auth-input {
+    width: 100%;
+    padding: var(--space-md);
+    font-size: 1rem;
+    background: var(--bg-white);
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: box-shadow var(--transition-fast);
+  }
+  
+  .auth-input:focus {
+    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.3);
+  }
+  
+  .auth-error {
+    color: var(--coral);
+    font-size: 0.875rem;
+    text-align: center;
+  }
+  
+  .auth-submit {
+    width: 100%;
+    background: var(--gradient-sunset);
+    color: white;
+    font-size: 1.125rem;
+    font-weight: 700;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+  
+  .auth-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(255, 107, 107, 0.3);
+  }
+  
+  .auth-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .auth-switch {
+    text-align: center;
+    margin-top: var(--space-lg);
+    color: var(--text-medium);
+  }
+  
+  .auth-switch button {
+    background: none;
+    color: var(--sky);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  
+  /* Background shapes */
+  .auth-shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  
+  .auth .shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.5;
+    filter: blur(60px);
+  }
+  
+  .auth .shape-1 {
+    width: 300px;
+    height: 300px;
+    background: var(--mint);
+    top: -100px;
+    right: -50px;
+    animation: drift1 25s linear infinite;
+  }
+  
+  .auth .shape-2 {
+    width: 250px;
+    height: 250px;
+    background: var(--lavender);
+    bottom: -50px;
+    left: -50px;
+    animation: drift2 30s linear infinite;
+  }
+  
+  .auth .shape-3 {
+    width: 200px;
+    height: 200px;
+    background: var(--peach);
+    top: 50%;
+    right: -100px;
+    animation: drift3 28s linear infinite;
+  }
+  
+  @keyframes drift1 {
+    0% { top: -10%; right: -10%; }
+    50% { top: 60%; right: 70%; }
+    100% { top: -10%; right: -10%; }
+  }
+  
+  @keyframes drift2 {
+    0% { bottom: -10%; left: -10%; }
+    50% { bottom: 50%; left: 60%; }
+    100% { bottom: -10%; left: -10%; }
+  }
+  
+  @keyframes drift3 {
+    0% { top: 50%; right: -20%; }
+    50% { top: 10%; right: 50%; }
+    100% { top: 50%; right: -20%; }
+  }

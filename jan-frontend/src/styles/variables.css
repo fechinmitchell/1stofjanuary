@@ -1,0 +1,46 @@
+:root {
+    /* Primary colours - bright & poppy */
+    --coral: #FF6B6B;
+    --sunshine: #FFE66D;
+    --mint: #4ECDC4;
+    --sky: #45B7D1;
+    --lavender: #A78BFA;
+    --peach: #FBBF77;
+    
+    /* Backgrounds */
+    --bg-light: #FFFDF7;
+    --bg-white: #FFFFFF;
+    
+    /* Text */
+    --text-dark: #2D3436;
+    --text-medium: #636E72;
+    --text-light: #B2BEC3;
+    --font-handwritten: 'Caveat', cursive;
+    --font-handwritten-alt: 'Kalam', cursive;
+    
+    /* Gradients */
+    --gradient-warm: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 100%);
+    --gradient-cool: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+    --gradient-sunset: linear-gradient(135deg, #FF6B6B 0%, #A78BFA 100%);
+    
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 40px;
+    --space-xxl: 64px;
+    
+    /* Border radius */
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 9999px;
+    
+    /* Fonts */
+    --font-main: 'Inter', -apple-system, sans-serif;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-medium: 0.3s ease;
+  }
