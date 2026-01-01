@@ -15,6 +15,9 @@ const Dashboard = () => {
   const [showVisionBoardModal, setShowVisionBoardModal] = useState(false);
   const [showNoGoalsModal, setShowNoGoalsModal] = useState(false);
   const [showRedoModal, setShowRedoModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
   const [redoConfirmText, setRedoConfirmText] = useState('');
   const [notifyEmail, setNotifyEmail] = useState('');
   const [visionBoardEmail, setVisionBoardEmail] = useState('');
@@ -26,6 +29,7 @@ const Dashboard = () => {
 
   const firstName = user?.displayName?.split(' ')[0] || 'friend';
   const CONFIRM_PHRASE = "I'm starting fresh";
+  const DELETE_PHRASE = "delete my account";
 
   const sections = activeYear === 2026 ? [
     {
@@ -192,6 +196,26 @@ const Dashboard = () => {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText === DELETE_PHRASE) {
+      try {
+        // Clear all local data
+        if (user) {
+          localStorage.removeItem(`wizard_answers_${user.uid}`);
+        }
+        // Reset wizard state
+        await resetWizard();
+        // Log out
+        await logout();
+        // Navigate to home
+        navigate('/');
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        alert('Failed to delete account. Please try again.');
+      }
+    }
+  };
+
   const handleNotifySubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -265,6 +289,13 @@ const Dashboard = () => {
           <div className="dashboard-user">
             {isSaving && <span className="saving-indicator">💾 Saving...</span>}
             <span className="dashboard-user-name">Hey, {firstName}!</span>
+            <button 
+              className="dashboard-settings-btn" 
+              onClick={() => setShowSettingsModal(true)}
+              title="Settings"
+            >
+              ⚙️
+            </button>
             <button className="dashboard-logout" onClick={handleLogout}>
               Log out
             </button>
@@ -425,6 +456,91 @@ const Dashboard = () => {
         <p>Made with ❤️ for your best year yet</p>
         <p className="footer-small">Your goals are synced to the cloud ☁️</p>
       </footer>
+
+      {/* Settings Modal */}
+      {showSettingsModal && (
+        <div className="modal-overlay" onClick={() => setShowSettingsModal(false)}>
+          <div className="modal-content glass-modal settings-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowSettingsModal(false)}>×</button>
+            
+            <div className="modal-icon">⚙️</div>
+            <h2 className="modal-title">Settings</h2>
+            
+            {!showDeleteConfirm ? (
+              <div className="settings-content">
+                {/* Account Info */}
+                <div className="settings-section">
+                  <h3 className="settings-section-title">Account</h3>
+                  <div className="settings-info">
+                    <div className="settings-info-row">
+                      <span className="settings-label">Name</span>
+                      <span className="settings-value">{user?.displayName || 'Not set'}</span>
+                    </div>
+                    <div className="settings-info-row">
+                      <span className="settings-label">Email</span>
+                      <span className="settings-value">{user?.email || 'Not set'}</span>
+                    </div>
+                    <div className="settings-info-row">
+                      <span className="settings-label">Goals</span>
+                      <span className="settings-value">{totalItems} items</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Danger Zone */}
+                <div className="settings-section danger-zone">
+                  <h3 className="settings-section-title">⚠️ Danger Zone</h3>
+                  <p className="settings-danger-text">
+                    Once you delete your account, all your goals and data will be permanently removed.
+                  </p>
+                  <button 
+                    className="settings-delete-btn"
+                    onClick={() => setShowDeleteConfirm(true)}
+                  >
+                    🗑️ Delete Account
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="delete-confirm-content">
+                <p className="modal-description">
+                  This will <strong>permanently delete all your data</strong> including all {totalItems} goals.
+                </p>
+                <p className="modal-description" style={{ marginTop: 'var(--space-md)' }}>
+                  To confirm, please type <strong>{DELETE_PHRASE}</strong> below:
+                </p>
+                
+                <div className="redo-confirm-form">
+                  <input
+                    type="text"
+                    className="redo-confirm-input"
+                    placeholder={DELETE_PHRASE}
+                    value={deleteConfirmText}
+                    onChange={(e) => setDeleteConfirmText(e.target.value)}
+                    autoFocus
+                  />
+                  <button 
+                    className={`redo-confirm-btn ${deleteConfirmText === DELETE_PHRASE ? 'active' : ''}`}
+                    onClick={handleDeleteAccount}
+                    disabled={deleteConfirmText !== DELETE_PHRASE}
+                  >
+                    🗑️ Permanently Delete Account
+                  </button>
+                  <button 
+                    className="redo-cancel-btn"
+                    onClick={() => {
+                      setShowDeleteConfirm(false);
+                      setDeleteConfirmText('');
+                    }}
+                  >
+                    ← Back to Settings
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Redo Goals Confirmation Modal */}
       {showRedoModal && (
