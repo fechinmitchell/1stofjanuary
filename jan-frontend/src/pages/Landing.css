@@ -1,195 +1,181 @@
-/* Auth Modal */
-.auth-modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
+.landing {
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 100;
     padding: var(--space-lg);
-    animation: fadeIn 0.2s ease;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  .auth-modal {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border-radius: var(--radius-xl);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    padding: var(--space-xl);
-    max-width: 420px;
-    width: 100%;
-    text-align: center;
-    animation: modalSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
   }
   
-  @keyframes modalSlideIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.9) translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
+  .landing-content {
+    text-align: center;
+    max-width: 600px;
+    z-index: 1;
   }
   
-  .auth-modal-close {
-    position: absolute;
-    top: var(--space-md);
-    right: var(--space-md);
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--bg-light);
-    color: var(--text-medium);
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all var(--transition-fast);
-    cursor: pointer;
-    border: none;
-  }
-  
-  .auth-modal-close:hover {
-    background: var(--coral);
-    color: white;
-    transform: rotate(90deg);
-  }
-  
-  .auth-modal-icon {
-    font-size: 3.5rem;
-    margin-bottom: var(--space-md);
-  }
-  
-  .auth-modal-title {
-    font-size: 1.75rem;
-    font-weight: 800;
+  .landing-badge {
+    display: inline-block;
+    background: var(--gradient-warm);
     color: var(--text-dark);
-    margin-bottom: var(--space-xs);
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-lg);
+    animation: pulse 2s ease-in-out infinite;
   }
   
-  .auth-modal-subtitle {
+  .landing-title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: var(--space-lg);
+    color: var(--text-dark);
+  }
+  
+  .landing-title .highlight {
+    background: var(--gradient-cool);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .landing-subtitle {
+    font-size: 1.25rem;
     color: var(--text-medium);
-    font-size: 1rem;
     margin-bottom: var(--space-xl);
   }
   
-  .auth-google-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-sm);
-    background: white;
-    color: var(--text-dark);
-    font-size: 1rem;
-    font-weight: 600;
-    padding: var(--space-md);
-    border-radius: var(--radius-lg);
-    border: 2px solid var(--bg-light);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all var(--transition-fast);
-    cursor: pointer;
+  .landing-cta {
+    background: var(--gradient-sunset);
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-full);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   }
   
-  .auth-google-btn:hover:not(:disabled) {
-    border-color: var(--mint);
+  .landing-cta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 10px 40px rgba(255, 107, 107, 0.3);
   }
   
-  .auth-google-btn:disabled {
+  .landing-cta:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+    transform: none;
   }
   
-  .google-icon {
-    width: 20px;
-    height: 20px;
-  }
-  
-  .auth-divider {
-    display: flex;
-    align-items: center;
-    margin: var(--space-lg) 0;
-  }
-  
-  .auth-divider::before,
-  .auth-divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--bg-light);
-  }
-  
-  .auth-divider span {
-    padding: 0 var(--space-md);
-    color: var(--text-light);
-    font-size: 0.875rem;
-  }
-  
-  .auth-email-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-sm);
-    background: var(--bg-light);
-    color: var(--text-medium);
-    font-size: 1rem;
-    font-weight: 600;
-    padding: var(--space-md);
-    border-radius: var(--radius-lg);
-    border: 2px solid transparent;
-    transition: all var(--transition-fast);
-    cursor: not-allowed;
-    position: relative;
-  }
-  
-  .coming-soon-badge {
-    font-size: 0.7rem;
-    background: linear-gradient(135deg, var(--lavender) 0%, var(--sky) 100%);
-    color: white;
-    padding: 2px 8px;
-    border-radius: var(--radius-full);
-    margin-left: var(--space-sm);
-  }
-  
-  .auth-modal-footer {
+  .landing-hint {
     margin-top: var(--space-lg);
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     color: var(--text-light);
   }
   
-  /* Mobile adjustments */
-  @media (max-width: 480px) {
-    .auth-modal {
-      margin: var(--space-md);
-      padding: var(--space-lg);
-    }
-  
-    .auth-modal-title {
-      font-size: 1.5rem;
-    }
+  /* Floating background shapes */
+  .landing-shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
   }
-
+  
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    filter: blur(60px);
+  }
+  
+  .shape-1 {
+    width: 350px;
+    height: 350px;
+    background: var(--sunshine);
+    animation: drift1 25s linear infinite;
+  }
+  
+  .shape-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--mint);
+    animation: drift2 30s linear infinite;
+  }
+  
+  .shape-3 {
+    width: 250px;
+    height: 250px;
+    background: var(--lavender);
+    animation: drift3 28s linear infinite;
+  }
+  
+  .shape-4 {
+    width: 200px;
+    height: 200px;
+    background: var(--coral);
+    animation: drift4 22s linear infinite;
+  }
+  
+  .shape-5 {
+    width: 180px;
+    height: 180px;
+    background: var(--sky);
+    animation: drift5 26s linear infinite;
+  }
+  
+  /* DVD-style drifting animations */
+  @keyframes drift1 {
+    0% { top: -10%; left: -10%; }
+    25% { top: 70%; left: 80%; }
+    50% { top: 80%; left: 10%; }
+    75% { top: 10%; left: 70%; }
+    100% { top: -10%; left: -10%; }
+  }
+  
+  @keyframes drift2 {
+    0% { top: 80%; left: 90%; }
+    25% { top: 10%; left: 20%; }
+    50% { top: 60%; left: -5%; }
+    75% { top: 20%; left: 75%; }
+    100% { top: 80%; left: 90%; }
+  }
+  
+  @keyframes drift3 {
+    0% { top: 50%; left: 50%; }
+    25% { top: -5%; left: 80%; }
+    50% { top: 70%; left: 70%; }
+    75% { top: 85%; left: 5%; }
+    100% { top: 50%; left: 50%; }
+  }
+  
+  @keyframes drift4 {
+    0% { top: 10%; left: 80%; }
+    25% { top: 75%; left: 15%; }
+    50% { top: 20%; left: 5%; }
+    75% { top: 60%; left: 85%; }
+    100% { top: 10%; left: 80%; }
+  }
+  
+  @keyframes drift5 {
+    0% { top: 85%; left: 30%; }
+    25% { top: 5%; left: 60%; }
+    50% { top: 40%; left: 90%; }
+    75% { top: 70%; left: 10%; }
+    100% { top: 85%; left: 30%; }
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  
   /* Auth Modal */
-.auth-modal-overlay {
+  .auth-modal-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -367,5 +353,18 @@
   
     .auth-modal-title {
       font-size: 1.5rem;
+    }
+  
+    .landing-title {
+      font-size: 2rem;
+    }
+  
+    .landing-subtitle {
+      font-size: 1rem;
+    }
+  
+    .landing-cta {
+      font-size: 1rem;
+      padding: var(--space-md) var(--space-lg);
     }
   }
