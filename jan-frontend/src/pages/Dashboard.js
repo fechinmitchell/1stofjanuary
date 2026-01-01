@@ -139,8 +139,8 @@ const Dashboard = () => {
       }, 200);
       return () => clearTimeout(timer);
     }
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [isLoaded, activeYear]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded, activeYear]);
 
   const handleLogout = async () => {
     await logout();
@@ -297,9 +297,11 @@ const Dashboard = () => {
               : 'Start building your vision for the year ahead'
             }
           </p>
-          <button className="hero-btn primary" onClick={handleStartWizard}>
-            {totalItems > 0 ? '✏️ Edit Goals' : '🚀 Get Started'}
-          </button>
+          {totalItems === 0 && (
+            <button className="hero-btn primary" onClick={handleStartWizard}>
+              🚀 Get Started
+            </button>
+          )}
         </div>
       </div>
 
@@ -387,6 +389,16 @@ const Dashboard = () => {
             </div>
           </div>
         </section>
+
+        {/* Restart Wizard Section */}
+        {totalItems > 0 && (
+          <section className="restart-section">
+            <button className="restart-btn" onClick={handleStartWizard}>
+              🔄 Redo My Goals
+            </button>
+            <p className="restart-hint">Start fresh and go through the questions again</p>
+          </section>
+        )}
       </main>
 
       {/* Footer */}

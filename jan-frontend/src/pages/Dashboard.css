@@ -153,6 +153,18 @@
     color: var(--coral);
   }
   
+  /* Saving Indicator */
+  .saving-indicator {
+    font-size: 0.85rem;
+    color: var(--mint);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  
   /* Year Tabs */
   .year-tabs-container {
     position: relative;
@@ -660,6 +672,41 @@
     text-align: center;
   }
   
+  /* Restart Section */
+  .restart-section {
+    margin-top: var(--space-xl);
+    text-align: center;
+    padding: var(--space-xl) 0;
+  }
+  
+  .restart-btn {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px dashed rgba(167, 139, 250, 0.4);
+    color: var(--text-medium);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+  
+  .restart-btn:hover {
+    border-color: var(--lavender);
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--text-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(167, 139, 250, 0.15);
+  }
+  
+  .restart-hint {
+    margin-top: var(--space-sm);
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+  
   /* Footer */
   .dashboard-footer {
     position: relative;
@@ -787,6 +834,11 @@
     box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
   }
   
+  .notify-input:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
   .notify-btn {
     padding: var(--space-md);
     background: linear-gradient(135deg, rgba(255, 107, 107, 0.95) 0%, rgba(167, 139, 250, 0.95) 100%);
@@ -798,9 +850,15 @@
     box-shadow: 0 4px 15px rgba(255, 107, 107, 0.25);
   }
   
-  .notify-btn:hover {
+  .notify-btn:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(255, 107, 107, 0.35);
+  }
+  
+  .notify-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
   }
   
   /* Responsive */
@@ -874,6 +932,10 @@
   
     .vision-features {
       grid-template-columns: 1fr;
+    }
+  
+    .saving-indicator {
+      display: none;
     }
   }
   
