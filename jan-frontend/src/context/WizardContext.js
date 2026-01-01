@@ -25,31 +25,40 @@ export const WizardProvider = ({ children }) => {
   useEffect(() => {
     const loadAnswers = async () => {
       if (user) {
+        setIsLoaded(false);
+        
+        // First check localStorage for immediate display
+        const savedAnswers = localStorage.getItem(`wizard_answers_${user.uid}`);
+        if (savedAnswers) {
+          try {
+            const parsed = JSON.parse(savedAnswers);
+            setAnswers(parsed);
+            console.log('✅ Goals loaded from localStorage');
+          } catch (e) {
+            console.log('Could not parse localStorage');
+          }
+        }
+        
+        // Then try to sync with cloud
         try {
-          // Try to load from backend first
           const response = await getGoals(currentYear);
           if (response.goals && Object.keys(response.goals).length > 0) {
             setAnswers(response.goals);
-            console.log('✅ Goals loaded from cloud');
-          } else {
-            // Fall back to localStorage
-            const savedAnswers = localStorage.getItem(`wizard_answers_${user.uid}`);
-            if (savedAnswers) {
-              const parsed = JSON.parse(savedAnswers);
-              setAnswers(parsed);
-              // Sync localStorage data to backend
+            // Update localStorage with cloud data
+            localStorage.setItem(`wizard_answers_${user.uid}`, JSON.stringify(response.goals));
+            console.log('✅ Goals synced from cloud');
+          } else if (savedAnswers) {
+            // If cloud is empty but localStorage has data, sync to cloud
+            const parsed = JSON.parse(savedAnswers);
+            if (Object.keys(parsed).length > 0) {
               await saveGoals(currentYear, parsed);
-              console.log('✅ Goals migrated from localStorage to cloud');
+              console.log('✅ Goals migrated to cloud');
             }
           }
         } catch (error) {
-          console.log('⚠️ Could not load from cloud, using localStorage');
-          // Fall back to localStorage if backend fails
-          const savedAnswers = localStorage.getItem(`wizard_answers_${user.uid}`);
-          if (savedAnswers) {
-            setAnswers(JSON.parse(savedAnswers));
-          }
+          console.log('⚠️ Cloud sync failed, using localStorage:', error.message);
         }
+        
         setIsLoaded(true);
       } else {
         setAnswers({});
@@ -65,17 +74,17 @@ export const WizardProvider = ({ children }) => {
     const saveAnswersToCloud = async () => {
       if (user && isLoaded && Object.keys(answers).length > 0) {
         setIsSaving(true);
+        
+        // Always save to localStorage immediately
+        localStorage.setItem(`wizard_answers_${user.uid}`, JSON.stringify(answers));
+        
         try {
-          // Save to backend
           await saveGoals(currentYear, answers);
-          // Also keep localStorage as backup
-          localStorage.setItem(`wizard_answers_${user.uid}`, JSON.stringify(answers));
           console.log('✅ Goals saved to cloud');
         } catch (error) {
-          console.log('⚠️ Could not save to cloud, saved to localStorage');
-          // Save to localStorage as fallback
-          localStorage.setItem(`wizard_answers_${user.uid}`, JSON.stringify(answers));
+          console.log('⚠️ Could not save to cloud:', error.message);
         }
+        
         setIsSaving(false);
       }
     };
@@ -117,6 +126,12 @@ export const WizardProvider = ({ children }) => {
     }
   }, [user]);
 
+  // Check if user has any goals
+  const hasGoals = Object.keys(answers).some(key => {
+    const value = answers[key];
+    return Array.isArray(value) ? value.length > 0 : Boolean(value);
+  });
+
   return (
     <WizardContext.Provider value={{
       currentStep,
@@ -127,7 +142,8 @@ export const WizardProvider = ({ children }) => {
       goToStep,
       resetWizard,
       isLoaded,
-      isSaving
+      isSaving,
+      hasGoals
     }}>
       {children}
     </WizardContext.Provider>
