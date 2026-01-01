@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getGoals } from '../services/api';
 import './Landing.css';
 
 const Landing = () => {
@@ -23,15 +24,23 @@ const Landing = () => {
   const handleGoogleSignIn = async () => {
     try {
       setIsLoggingIn(true);
-      const loggedInUser = await loginWithGoogle();
+      await loginWithGoogle();
       
-      // Check if user has existing goals in localStorage
-      const savedAnswers = localStorage.getItem(`wizard_answers_${loggedInUser.uid}`);
-      const hasExistingGoals = savedAnswers && Object.keys(JSON.parse(savedAnswers)).length > 0;
-      
-      if (hasExistingGoals) {
-        navigate('/dashboard');
-      } else {
+      // Check if user has existing goals in the cloud
+      try {
+        const response = await getGoals(2026);
+        const hasCloudGoals = response.goals && Object.keys(response.goals).length > 0;
+        
+        if (hasCloudGoals) {
+          // Returning user with goals - go to dashboard
+          navigate('/dashboard');
+        } else {
+          // New user or user with no goals - go to wizard
+          navigate('/wizard');
+        }
+      } catch (error) {
+        // If cloud check fails, go to wizard (new user experience)
+        console.log('Could not check cloud goals, starting wizard');
         navigate('/wizard');
       }
     } catch (error) {

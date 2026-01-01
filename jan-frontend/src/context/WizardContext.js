@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useAuth } from './AuthContext';
-import { getGoals, saveGoals } from '../services/api';
+import { getGoals, saveGoals, deleteGoals } from '../services/api';
 
 const WizardContext = createContext();
 
@@ -117,11 +117,15 @@ export const WizardProvider = ({ children }) => {
     setAnswers({});
     setCurrentStep(0);
     if (user) {
+      // Clear localStorage
       localStorage.removeItem(`wizard_answers_${user.uid}`);
+      
+      // Delete from cloud
       try {
-        await saveGoals(currentYear, {});
+        await deleteGoals(currentYear);
+        console.log('✅ Goals deleted from cloud');
       } catch (error) {
-        console.log('Could not reset cloud data');
+        console.log('⚠️ Could not delete cloud data:', error.message);
       }
     }
   }, [user]);

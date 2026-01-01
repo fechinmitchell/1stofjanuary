@@ -199,11 +199,11 @@ const Dashboard = () => {
   const handleDeleteAccount = async () => {
     if (deleteConfirmText === DELETE_PHRASE) {
       try {
-        // Clear all local data
+        // Clear localStorage
         if (user) {
           localStorage.removeItem(`wizard_answers_${user.uid}`);
         }
-        // Reset wizard state
+        // Reset wizard state AND delete cloud data
         await resetWizard();
         // Log out
         await logout();
@@ -459,9 +459,17 @@ const Dashboard = () => {
 
       {/* Settings Modal */}
       {showSettingsModal && (
-        <div className="modal-overlay" onClick={() => setShowSettingsModal(false)}>
+        <div className="modal-overlay" onClick={() => {
+          setShowSettingsModal(false);
+          setShowDeleteConfirm(false);
+          setDeleteConfirmText('');
+        }}>
           <div className="modal-content glass-modal settings-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setShowSettingsModal(false)}>×</button>
+            <button className="modal-close" onClick={() => {
+              setShowSettingsModal(false);
+              setShowDeleteConfirm(false);
+              setDeleteConfirmText('');
+            }}>×</button>
             
             <div className="modal-icon">⚙️</div>
             <h2 className="modal-title">Settings</h2>
