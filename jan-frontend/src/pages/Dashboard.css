@@ -861,6 +861,76 @@
     transform: none;
   }
   
+  /* Redo Goals Modal */
+  .redo-modal .modal-description {
+    font-size: 0.95rem;
+  }
+  
+  .redo-confirm-form {
+    margin-top: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  
+  .redo-confirm-input {
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    border: 2px solid #fecaca;
+    background: #fef2f2;
+    color: var(--text-dark);
+    font-size: 1rem;
+    text-align: center;
+    transition: all var(--transition-fast);
+  }
+  
+  .redo-confirm-input::placeholder {
+    color: #f87171;
+    opacity: 0.6;
+  }
+  
+  .redo-confirm-input:focus {
+    outline: none;
+    border-color: #f87171;
+    box-shadow: 0 0 0 4px rgba(248, 113, 113, 0.1);
+  }
+  
+  .redo-confirm-btn {
+    padding: var(--space-md);
+    background: #e5e7eb;
+    color: #9ca3af;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-fast);
+    cursor: not-allowed;
+  }
+  
+  .redo-confirm-btn.active {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  }
+  
+  .redo-confirm-btn.active:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+  }
+  
+  .redo-cancel-btn {
+    padding: var(--space-sm);
+    background: transparent;
+    color: var(--text-medium);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all var(--transition-fast);
+  }
+  
+  .redo-cancel-btn:hover {
+    color: var(--text-dark);
+  }
+  
   /* Responsive */
   @media (max-width: 768px) {
     .dashboard-header-content {

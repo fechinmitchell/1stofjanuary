@@ -8,12 +8,14 @@ import './Dashboard.css';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
-  const { answers, isLoaded, isSaving } = useWizard();
+  const { answers, isLoaded, isSaving, resetWizard } = useWizard();
   const navigate = useNavigate();
   const [showShareCard, setShowShareCard] = useState(false);
   const [show2027Modal, setShow2027Modal] = useState(false);
   const [showVisionBoardModal, setShowVisionBoardModal] = useState(false);
   const [showNoGoalsModal, setShowNoGoalsModal] = useState(false);
+  const [showRedoModal, setShowRedoModal] = useState(false);
+  const [redoConfirmText, setRedoConfirmText] = useState('');
   const [notifyEmail, setNotifyEmail] = useState('');
   const [visionBoardEmail, setVisionBoardEmail] = useState('');
   const [emailSubmitted, setEmailSubmitted] = useState(false);
@@ -23,6 +25,7 @@ const Dashboard = () => {
   const [visibleCards, setVisibleCards] = useState([]);
 
   const firstName = user?.displayName?.split(' ')[0] || 'friend';
+  const CONFIRM_PHRASE = "I'm starting fresh";
 
   const sections = activeYear === 2026 ? [
     {
@@ -172,6 +175,20 @@ const Dashboard = () => {
       alert('📄 PDF Download coming soon!\n\nFor now, use the Share Card feature to download an image you can print or share on social media.');
     } else {
       setShowNoGoalsModal(true);
+    }
+  };
+
+  const handleRedoClick = () => {
+    setShowRedoModal(true);
+    setRedoConfirmText('');
+  };
+
+  const handleRedoConfirm = async () => {
+    if (redoConfirmText === CONFIRM_PHRASE) {
+      await resetWizard();
+      setShowRedoModal(false);
+      setRedoConfirmText('');
+      navigate('/wizard');
     }
   };
 
@@ -393,7 +410,7 @@ const Dashboard = () => {
         {/* Restart Wizard Section */}
         {totalItems > 0 && (
           <section className="restart-section">
-            <button className="restart-btn" onClick={handleStartWizard}>
+            <button className="restart-btn" onClick={handleRedoClick}>
               🔄 Redo My Goals
             </button>
             <p className="restart-hint">Start fresh and go through the questions again</p>
@@ -406,6 +423,48 @@ const Dashboard = () => {
         <p>Made with ❤️ for your best year yet</p>
         <p className="footer-small">Your goals are synced to the cloud ☁️</p>
       </footer>
+
+      {/* Redo Goals Confirmation Modal */}
+      {showRedoModal && (
+        <div className="modal-overlay" onClick={() => setShowRedoModal(false)}>
+          <div className="modal-content glass-modal redo-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowRedoModal(false)}>×</button>
+            
+            <div className="modal-icon">⚠️</div>
+            <h2 className="modal-title">Start Fresh?</h2>
+            <p className="modal-description">
+              This will <strong>delete all {totalItems} of your current goals</strong> and let you start the wizard from the beginning.
+            </p>
+            <p className="modal-description" style={{ marginTop: 'var(--space-md)' }}>
+              To confirm, please type <strong>{CONFIRM_PHRASE}</strong> below:
+            </p>
+            
+            <div className="redo-confirm-form">
+              <input
+                type="text"
+                className="redo-confirm-input"
+                placeholder={CONFIRM_PHRASE}
+                value={redoConfirmText}
+                onChange={(e) => setRedoConfirmText(e.target.value)}
+                autoFocus
+              />
+              <button 
+                className={`redo-confirm-btn ${redoConfirmText === CONFIRM_PHRASE ? 'active' : ''}`}
+                onClick={handleRedoConfirm}
+                disabled={redoConfirmText !== CONFIRM_PHRASE}
+              >
+                🗑️ Delete & Start Fresh
+              </button>
+              <button 
+                className="redo-cancel-btn"
+                onClick={() => setShowRedoModal(false)}
+              >
+                Nevermind, keep my goals
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 2027 Modal */}
       {show2027Modal && (
