@@ -344,11 +344,13 @@ const Dashboard = () => {
                 <div className="goal-card-content">
                   {hasItems ? (
                     <ul className="goal-list">
-                      {items.slice(0, 5).map((item, idx) => (
-                        <li key={idx}>{item}</li>
+                      {items.map((item, idx) => (
+                        <li key={idx} className={idx >= 5 ? 'hidden-goal' : ''}>
+                          {item}
+                        </li>
                       ))}
                       {items.length > 5 && (
-                        <li className="goal-more">+{items.length - 5} more</li>
+                        <li className="goal-more">+{items.length - 5} more (hover to see all)</li>
                       )}
                     </ul>
                   ) : (
