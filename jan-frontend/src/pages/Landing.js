@@ -1,9 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Landing.css';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { user, loginWithGoogle } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  // If already logged in, redirect to dashboard
+  React.useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
+
+  const handleGetStarted = async () => {
+    try {
+      setLoading(true);
+      await loginWithGoogle();
+      navigate('/wizard');
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Login failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="landing">
@@ -17,9 +40,10 @@ const Landing = () => {
         </p>
         <button 
           className="landing-cta"
-          onClick={() => navigate('/auth')}
+          onClick={handleGetStarted}
+          disabled={loading}
         >
-          Let's Plan 2026 →
+          {loading ? 'Signing in...' : "Let's Plan 2026 →"}
         </button>
         <p className="landing-hint">
           Fun, easy, and actually useful. Promise.
