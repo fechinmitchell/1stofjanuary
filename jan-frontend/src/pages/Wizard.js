@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { WizardProvider, useWizard } from '../context/WizardContext';
+import { useWizard } from '../context/WizardContext';
+import { useAuth } from '../context/AuthContext';
 import TransitionMessage from '../components/wizard/TransitionMessage';
 import './Wizard.css';
 
@@ -189,14 +190,15 @@ const steps = [
   }
 ];
 
-const WizardContent = () => {
-  const { currentStep } = useWizard();
+const Wizard = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { currentStep, isLoaded, hasGoals, totalGoals } = useWizard();
   const [showTransition, setShowTransition] = useState(false);
   const [lastStep, setLastStep] = useState(-1);
 
   // Check if we need to show transition
-  React.useEffect(() => {
+  useEffect(() => {
     if (currentStep > lastStep && steps[currentStep]?.transition) {
       setShowTransition(true);
     }
@@ -204,25 +206,97 @@ const WizardContent = () => {
   }, [currentStep, lastStep]);
 
   // If we've gone past all steps, go to dashboard
-  if (currentStep >= steps.length) {
-    navigate('/dashboard');
-    return null;
-  }
-
-  const currentStepData = steps[currentStep];
-  const CurrentStepComponent = currentStepData.component;
+  useEffect(() => {
+    if (currentStep >= steps.length) {
+      navigate('/dashboard');
+    }
+  }, [currentStep, navigate]);
 
   const handleTransitionComplete = () => {
     setShowTransition(false);
   };
 
+  const handleExit = () => {
+    if (hasGoals) {
+      navigate('/dashboard');
+    } else {
+      navigate('/');
+    }
+  };
+
+  const handleGoToDashboard = () => {
+    navigate('/dashboard');
+  };
+
+  // Show loading state
+  if (!isLoaded) {
+    return (
+      <div className="wizard">
+        <div className="wizard-bg">
+          <div className="wizard-orb wizard-orb-1"></div>
+          <div className="wizard-orb wizard-orb-2"></div>
+          <div className="wizard-orb wizard-orb-3"></div>
+        </div>
+        <div className="wizard-loading">
+          <div className="wizard-loading-icon">🎯</div>
+          <p>Loading your journey...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If past all steps, show nothing (will redirect)
+  if (currentStep >= steps.length) {
+    return null;
+  }
+
+  const currentStepData = steps[currentStep];
+  const CurrentStepComponent = currentStepData.component;
+  const progress = ((currentStep + 1) / steps.length) * 100;
+
   return (
     <div className="wizard">
+      {/* Animated Background */}
+      <div className="wizard-bg">
+        <div className="wizard-orb wizard-orb-1"></div>
+        <div className="wizard-orb wizard-orb-2"></div>
+        <div className="wizard-orb wizard-orb-3"></div>
+      </div>
+
+      {/* Header */}
+      <header className="wizard-header">
+        <div className="wizard-header-content">
+          <div className="wizard-logo" onClick={() => navigate('/')}>
+            <span className="wizard-logo-icon">🎯</span>
+            <span className="wizard-logo-text">1st of January</span>
+          </div>
+          <div className="wizard-header-right">
+            {hasGoals && (
+              <button className="wizard-dashboard-btn" onClick={handleGoToDashboard}>
+                <span className="wizard-dashboard-btn-icon">📊</span>
+                <span className="wizard-dashboard-btn-text">My Dashboard</span>
+              </button>
+            )}
+            <button className="wizard-exit" onClick={handleExit}>
+              {hasGoals ? 'Save & Exit' : 'Exit'}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Progress Bar */}
       <div className="wizard-progress">
-        <div 
-          className="wizard-progress-bar" 
-          style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-        />
+        <div className="wizard-progress-content">
+          <div className="progress-bar-container">
+            <div className="progress-bar">
+              <div 
+                className="progress-bar-fill" 
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            <span className="progress-text">{currentStep + 1} / {steps.length}</span>
+          </div>
+        </div>
       </div>
 
       {/* Transition Message */}
@@ -237,34 +311,43 @@ const WizardContent = () => {
 
       {/* Main Step Content */}
       {!showTransition && (
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
-            className="wizard-step"
-          >
-            <CurrentStepComponent />
-          </motion.div>
-        </AnimatePresence>
+        <main className="wizard-content">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentStep}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
+              className="wizard-step"
+            >
+              <CurrentStepComponent />
+            </motion.div>
+          </AnimatePresence>
+        </main>
       )}
 
+      {/* Floating shapes */}
       <div className="wizard-shapes">
         <div className="shape shape-1"></div>
         <div className="shape shape-2"></div>
         <div className="shape shape-3"></div>
       </div>
-    </div>
-  );
-};
 
-const Wizard = () => {
-  return (
-    <WizardProvider>
-      <WizardContent />
-    </WizardProvider>
+      {/* Show dashboard shortcut banner if user has goals and is on first step */}
+      {hasGoals && currentStep === 0 && (
+        <div className="wizard-return-banner">
+          <div className="wizard-return-content">
+            <span className="wizard-return-text">
+              👋 Welcome back! You have <strong>{totalGoals}</strong> goals saved.
+            </span>
+            <button className="wizard-return-btn" onClick={handleGoToDashboard}>
+              Go to Dashboard →
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

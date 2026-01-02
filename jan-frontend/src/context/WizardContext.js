@@ -130,11 +130,21 @@ export const WizardProvider = ({ children }) => {
     }
   }, [user]);
 
-  // Check if user has any goals
+  // Check if user has any goals with actual content
   const hasGoals = Object.keys(answers).some(key => {
     const value = answers[key];
     return Array.isArray(value) ? value.length > 0 : Boolean(value);
   });
+
+  // Count total goals
+  const totalGoals = Object.values(answers).reduce((total, value) => {
+    if (Array.isArray(value)) {
+      return total + value.length;
+    } else if (value) {
+      return total + 1;
+    }
+    return total;
+  }, 0);
 
   return (
     <WizardContext.Provider value={{
@@ -147,7 +157,8 @@ export const WizardProvider = ({ children }) => {
       resetWizard,
       isLoaded,
       isSaving,
-      hasGoals
+      hasGoals,
+      totalGoals
     }}>
       {children}
     </WizardContext.Provider>

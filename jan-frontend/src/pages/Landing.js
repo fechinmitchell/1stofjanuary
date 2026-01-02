@@ -10,11 +10,30 @@ const Landing = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // If already logged in, redirect to dashboard
+  // If already logged in, redirect appropriately
   useEffect(() => {
-    if (!loading && user) {
-      navigate('/dashboard');
-    }
+    const checkUserGoals = async () => {
+      if (!loading && user) {
+        try {
+          const response = await getGoals(2026);
+          const hasGoals = response.goals && Object.keys(response.goals).some(key => {
+            const value = response.goals[key];
+            return Array.isArray(value) ? value.length > 0 : Boolean(value);
+          });
+          
+          if (hasGoals) {
+            navigate('/dashboard');
+          } else {
+            navigate('/wizard');
+          }
+        } catch (error) {
+          // If can't check cloud, go to wizard
+          navigate('/wizard');
+        }
+      }
+    };
+    
+    checkUserGoals();
   }, [user, loading, navigate]);
 
   const handleGetStarted = () => {
@@ -25,28 +44,10 @@ const Landing = () => {
     try {
       setIsLoggingIn(true);
       await loginWithGoogle();
-      
-      // Check if user has existing goals in the cloud
-      try {
-        const response = await getGoals(2026);
-        const hasCloudGoals = response.goals && Object.keys(response.goals).length > 0;
-        
-        if (hasCloudGoals) {
-          // Returning user with goals - go to dashboard
-          navigate('/dashboard');
-        } else {
-          // New user or user with no goals - go to wizard
-          navigate('/wizard');
-        }
-      } catch (error) {
-        // If cloud check fails, go to wizard (new user experience)
-        console.log('Could not check cloud goals, starting wizard');
-        navigate('/wizard');
-      }
+      // The useEffect above will handle navigation after login
     } catch (error) {
       console.error('Login error:', error);
       alert('Login failed. Please try again.');
-    } finally {
       setIsLoggingIn(false);
     }
   };
