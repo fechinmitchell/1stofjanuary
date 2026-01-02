@@ -269,7 +269,7 @@
   }
   
   .hero-title {
-    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-size: clamp(2rem, 6vw, 4rem);
     font-weight: 800;
     background: linear-gradient(135deg, var(--coral) 0%, var(--lavender) 100%);
     -webkit-background-clip: text;
@@ -279,7 +279,7 @@
   }
   
   .hero-subtitle {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 3vw, 1.2rem);
     color: var(--text-medium);
     margin-bottom: var(--space-xl);
   }
@@ -315,7 +315,7 @@
   
   .goals-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: var(--space-lg);
   }
   
@@ -340,7 +340,7 @@
     transform: translateY(30px) scale(0.95) rotate(-1deg);
     display: flex;
     flex-direction: column;
-    min-height: 240px;
+    min-height: 220px;
     box-shadow: 
       0 4px 20px rgba(0, 0, 0, 0.08),
       0 0 0 1px rgba(0, 0, 0, 0.02);
@@ -426,13 +426,13 @@
   }
   
   .goal-card-icon {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   }
   
   .goal-card-title {
     flex: 1;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-dark);
     font-family: var(--font-handwritten);
@@ -444,9 +444,9 @@
   .goal-card-count {
     background: linear-gradient(135deg, rgba(255, 107, 107, 0.9) 0%, rgba(167, 139, 250, 0.9) 100%);
     color: white;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
-    padding: 4px 12px;
+    padding: 4px 10px;
     border-radius: var(--radius-full);
   }
   
@@ -470,9 +470,9 @@
   
   .goal-list li {
     color: var(--text-dark);
-    font-size: 1.15rem;
+    font-size: 1rem;
     padding: var(--space-xs) 0;
-    line-height: 32px;
+    line-height: 28px;
     font-family: var(--font-handwritten);
     position: relative;
   }
@@ -491,7 +491,7 @@
   .goal-more {
     color: var(--text-light);
     font-style: italic;
-    font-size: 1rem !important;
+    font-size: 0.9rem !important;
     cursor: pointer;
     transition: color var(--transition-fast);
   }
@@ -509,7 +509,7 @@
     font-style: italic;
     text-align: center;
     padding: var(--space-lg) 0;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-family: var(--font-handwritten);
   }
   
@@ -585,6 +585,120 @@
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--text-dark);
+  }
+  
+  /* Invite Friends Section */
+  .invite-friends-section {
+    margin-top: var(--space-xxl);
+    padding: 0 var(--space-md);
+  }
+  
+  .invite-friends-content {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(167, 139, 250, 0.1) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-xl);
+    border: 2px solid rgba(255, 107, 107, 0.2);
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-md);
+  }
+  
+  .invite-friends-icon {
+    font-size: 3rem;
+  }
+  
+  .invite-friends-text h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: var(--space-xs);
+  }
+  
+  .invite-friends-text p {
+    color: var(--text-medium);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .invite-form {
+    display: flex;
+    gap: var(--space-sm);
+    width: 100%;
+    max-width: 500px;
+    margin-top: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .invite-input {
+    flex: 1;
+    min-width: 200px;
+    padding: var(--space-md);
+    border-radius: var(--radius-full);
+    border: 2px solid rgba(255, 107, 107, 0.3);
+    background: white;
+    color: var(--text-dark);
+    font-size: 1rem;
+    transition: all var(--transition-fast);
+  }
+  
+  .invite-input::placeholder {
+    color: var(--text-light);
+  }
+  
+  .invite-input:focus {
+    outline: none;
+    border-color: var(--coral);
+    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+  }
+  
+  .invite-btn {
+    padding: var(--space-md) var(--space-xl);
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.95) 0%, rgba(167, 139, 250, 0.95) 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.25);
+    cursor: pointer;
+    border: none;
+    white-space: nowrap;
+  }
+  
+  .invite-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.35);
+  }
+  
+  .invite-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .invite-success {
+    background: rgba(52, 211, 153, 0.1);
+    color: #059669;
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  .invite-error {
+    color: #dc2626;
+    font-size: 0.9rem;
+    margin-top: var(--space-sm);
+    width: 100%;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   
   /* Vision Board Teaser */
@@ -794,6 +908,8 @@
     animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    max-height: 90vh;
+    overflow-y: auto;
   }
   
   @keyframes modalIn {
@@ -832,12 +948,12 @@
   }
   
   .modal-icon {
-    font-size: 4rem;
+    font-size: 3.5rem;
     margin-bottom: var(--space-md);
   }
   
   .modal-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 800;
     color: var(--text-dark);
     margin-bottom: var(--space-sm);
@@ -846,6 +962,7 @@
   .modal-description {
     color: var(--text-medium);
     line-height: 1.6;
+    font-size: 0.95rem;
   }
   
   .modal-description strong {
@@ -1034,6 +1151,9 @@
     color: var(--text-dark);
     font-weight: 600;
     font-size: 0.9rem;
+    word-break: break-all;
+    text-align: right;
+    max-width: 60%;
   }
   
   /* Danger Zone */
@@ -1076,57 +1196,155 @@
     text-align: center;
   }
   
-  /* Responsive */
-  @media (max-width: 768px) {
-    .dashboard-header-content {
+  /* ==================== */
+  /* RESPONSIVE - TABLET  */
+  /* ==================== */
+  @media (max-width: 1024px) {
+    .goals-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-md);
+    }
+    
+    .vision-board-content {
       flex-direction: column;
+      text-align: center;
+    }
+    
+    .vision-board-preview {
+      width: 180px;
+      height: 130px;
+    }
+    
+    .vision-board-text h3 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  /* ==================== */
+  /* RESPONSIVE - MOBILE  */
+  /* ==================== */
+  @media (max-width: 768px) {
+    /* Header */
+    .dashboard-header-content {
+      padding: var(--space-sm) var(--space-md);
+    }
+    
+    .dashboard-logo-text {
+      font-size: 1rem;
+    }
+    
+    .dashboard-logo-icon {
+      font-size: 1.5rem;
+    }
+    
+    .dashboard-user {
       gap: var(--space-sm);
     }
-  
-    .year-tabs {
-      flex-direction: row;
-      padding: var(--space-xs);
+    
+    .dashboard-user-name {
+      display: none;
     }
-  
+    
+    .dashboard-logout {
+      font-size: 0.85rem;
+    }
+    
+    /* Year Tabs */
+    .year-tabs-container {
+      padding: var(--space-md) var(--space-sm);
+    }
+    
+    .year-tabs {
+      padding: 4px;
+      gap: 4px;
+      width: 100%;
+      justify-content: center;
+    }
+    
     .year-tab {
       padding: var(--space-sm) var(--space-md);
-      min-width: 80px;
+      min-width: 70px;
+      flex: 1;
     }
-  
+    
+    .year-tab-icon {
+      font-size: 1.1rem;
+    }
+    
+    .year-tab span:nth-child(2) {
+      font-size: 0.95rem;
+    }
+    
     .year-tab-label {
       display: none;
     }
-  
-    .hero-title {
-      font-size: 2rem;
+    
+    /* Hero */
+    .dashboard-hero {
+      padding: var(--space-md) var(--space-md) var(--space-lg);
     }
-  
+    
+    .hero-title {
+      font-size: 1.75rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 0.95rem;
+    }
+    
+    .hero-btn {
+      padding: var(--space-md) var(--space-xl);
+      font-size: 1rem;
+    }
+    
+    /* Goals Grid */
+    .dashboard-main {
+      padding: 0 var(--space-sm) var(--space-xl);
+    }
+    
     .goals-grid {
       grid-template-columns: 1fr;
+      gap: var(--space-md);
     }
-  
+    
     .goal-card {
       min-height: auto;
-      transform: translateY(30px) scale(0.95) rotate(0deg) !important;
+      padding: var(--space-md);
+      padding-left: calc(var(--space-md) + 24px);
+      transform: translateY(20px) scale(0.98) rotate(0deg) !important;
     }
-  
+    
+    .goal-card::before {
+      left: 20px;
+    }
+    
     .goal-card.visible {
       transform: translateY(0) scale(1) rotate(0deg) !important;
     }
-  
+    
     .goal-card:hover {
-      transform: translateY(-5px) scale(1.01) rotate(0deg) !important;
+      transform: translateY(-4px) scale(1.01) rotate(0deg) !important;
     }
-  
+    
+    .goal-card-icon {
+      font-size: 1.25rem;
+    }
+    
+    .goal-card-title {
+      font-size: 1rem;
+    }
+    
+    .goal-list li {
+      font-size: 0.95rem;
+      line-height: 26px;
+    }
+    
+    /* Floating Buttons */
     .floating-actions {
-      bottom: var(--space-lg);
+      bottom: var(--space-md);
       right: var(--space-md);
     }
-  
-    .floating-btn-text {
-      display: none;
-    }
-  
+    
     .floating-btn {
       padding: var(--space-sm);
       border-radius: 50%;
@@ -1134,28 +1352,186 @@
       height: 48px;
       justify-content: center;
     }
-  
-    .vision-board-content {
+    
+    .floating-btn-text {
+      display: none;
+    }
+    
+    /* Invite Section */
+    .invite-friends-section {
+      margin-top: var(--space-xl);
+      padding: 0 var(--space-sm);
+    }
+    
+    .invite-friends-content {
+      padding: var(--space-lg);
+    }
+    
+    .invite-friends-icon {
+      font-size: 2.5rem;
+    }
+    
+    .invite-friends-text h3 {
+      font-size: 1.25rem;
+    }
+    
+    .invite-friends-text p {
+      font-size: 0.9rem;
+    }
+    
+    .invite-form {
       flex-direction: column;
-      text-align: center;
     }
-  
+    
+    .invite-input {
+      width: 100%;
+      min-width: unset;
+    }
+    
+    .invite-btn {
+      width: 100%;
+    }
+    
+    /* Vision Board */
+    .vision-board-teaser {
+      margin-top: var(--space-xl);
+      padding: 0 var(--space-sm);
+    }
+    
+    .vision-board-content {
+      padding: var(--space-lg);
+    }
+    
     .vision-board-preview {
-      width: 180px;
-      height: 120px;
+      width: 150px;
+      height: 110px;
     }
-  
+    
+    .vision-preview-item {
+      font-size: 1.25rem;
+    }
+    
+    .vision-board-text h3 {
+      font-size: 1.25rem;
+    }
+    
+    .vision-board-text p {
+      font-size: 0.9rem;
+    }
+    
+    /* Restart Section */
+    .restart-section {
+      padding: var(--space-lg) var(--space-sm);
+    }
+    
+    .restart-btn {
+      font-size: 0.9rem;
+      padding: var(--space-md) var(--space-lg);
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      padding: var(--space-md);
+      align-items: flex-end;
+    }
+    
+    .modal-content.glass-modal {
+      padding: var(--space-lg);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      max-height: 85vh;
+    }
+    
+    .modal-icon {
+      font-size: 3rem;
+    }
+    
+    .modal-title {
+      font-size: 1.25rem;
+    }
+    
+    .modal-description {
+      font-size: 0.9rem;
+    }
+    
     .vision-features {
       grid-template-columns: 1fr;
     }
-  
+    
+    /* Settings */
+    .settings-info-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    
+    .settings-value {
+      max-width: 100%;
+      text-align: left;
+    }
+    
+    /* Saving indicator */
     .saving-indicator {
       display: none;
     }
+    
+    /* Footer */
+    .dashboard-footer {
+      padding: var(--space-lg) var(--space-md);
+      font-size: 0.9rem;
+    }
   }
   
+  /* ======================== */
+  /* RESPONSIVE - SMALL PHONE */
+  /* ======================== */
+  @media (max-width: 380px) {
+    .year-tab {
+      padding: var(--space-xs) var(--space-sm);
+      min-width: 60px;
+    }
+    
+    .year-tab span:nth-child(2) {
+      font-size: 0.85rem;
+    }
+    
+    .hero-title {
+      font-size: 1.5rem;
+    }
+    
+    .goal-card {
+      padding: var(--space-sm);
+      padding-left: calc(var(--space-sm) + 20px);
+    }
+    
+    .goal-card::before {
+      left: 16px;
+    }
+    
+    .goal-card-title {
+      font-size: 0.95rem;
+    }
+    
+    .modal-content.glass-modal {
+      padding: var(--space-md);
+    }
+  }
+  
+  /* ==================== */
+  /* LARGE SCREENS        */
+  /* ==================== */
   @media (min-width: 1200px) {
     .goals-grid {
       grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  @media (min-width: 1600px) {
+    .dashboard-main {
+      max-width: 1600px;
+    }
+    
+    .goals-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-xl);
     }
   }

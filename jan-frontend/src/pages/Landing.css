@@ -12,6 +12,7 @@
     text-align: center;
     max-width: 600px;
     z-index: 1;
+    padding: var(--space-md);
   }
   
   .landing-badge {
@@ -27,7 +28,7 @@
   }
   
   .landing-title {
-    font-size: clamp(2.5rem, 8vw, 4rem);
+    font-size: clamp(2rem, 8vw, 4rem);
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: var(--space-lg);
@@ -42,7 +43,7 @@
   }
   
   .landing-subtitle {
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 3vw, 1.25rem);
     color: var(--text-medium);
     margin-bottom: var(--space-xl);
   }
@@ -50,7 +51,7 @@
   .landing-cta {
     background: var(--gradient-sunset);
     color: white;
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 3vw, 1.25rem);
     font-weight: 700;
     padding: var(--space-md) var(--space-xl);
     border-radius: var(--radius-full);
@@ -109,20 +110,6 @@
     animation: drift3 28s linear infinite;
   }
   
-  .shape-4 {
-    width: 200px;
-    height: 200px;
-    background: var(--coral);
-    animation: drift4 22s linear infinite;
-  }
-  
-  .shape-5 {
-    width: 180px;
-    height: 180px;
-    background: var(--sky);
-    animation: drift5 26s linear infinite;
-  }
-  
   /* DVD-style drifting animations */
   @keyframes drift1 {
     0% { top: -10%; left: -10%; }
@@ -146,22 +133,6 @@
     50% { top: 70%; left: 70%; }
     75% { top: 85%; left: 5%; }
     100% { top: 50%; left: 50%; }
-  }
-  
-  @keyframes drift4 {
-    0% { top: 10%; left: 80%; }
-    25% { top: 75%; left: 15%; }
-    50% { top: 20%; left: 5%; }
-    75% { top: 60%; left: 85%; }
-    100% { top: 10%; left: 80%; }
-  }
-  
-  @keyframes drift5 {
-    0% { top: 85%; left: 30%; }
-    25% { top: 5%; left: 60%; }
-    50% { top: 40%; left: 90%; }
-    75% { top: 70%; left: 10%; }
-    100% { top: 85%; left: 30%; }
   }
   
   @keyframes pulse {
@@ -327,6 +298,7 @@
     transition: all var(--transition-fast);
     cursor: not-allowed;
     position: relative;
+    flex-wrap: wrap;
   }
   
   .coming-soon-badge {
@@ -344,27 +316,91 @@
     color: var(--text-light);
   }
   
-  /* Mobile adjustments */
-  @media (max-width: 480px) {
-    .auth-modal {
-      margin: var(--space-md);
-      padding: var(--space-lg);
+  /* ==================== */
+  /* RESPONSIVE - MOBILE  */
+  /* ==================== */
+  @media (max-width: 768px) {
+    .landing {
+      padding: var(--space-md);
     }
-  
-    .auth-modal-title {
-      font-size: 1.5rem;
+    
+    .landing-content {
+      padding: var(--space-sm);
     }
-  
+    
+    .landing-badge {
+      font-size: 0.8rem;
+      padding: var(--space-xs) var(--space-md);
+    }
+    
     .landing-title {
       font-size: 2rem;
+      margin-bottom: var(--space-md);
     }
-  
+    
     .landing-subtitle {
       font-size: 1rem;
+      margin-bottom: var(--space-lg);
     }
-  
+    
     .landing-cta {
       font-size: 1rem;
       padding: var(--space-md) var(--space-lg);
+      width: 100%;
+    }
+    
+    /* Auth Modal Mobile */
+    .auth-modal-overlay {
+      padding: var(--space-md);
+      align-items: flex-end;
+    }
+    
+    .auth-modal {
+      padding: var(--space-lg);
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    
+    .auth-modal-icon {
+      font-size: 3rem;
+    }
+    
+    .auth-modal-title {
+      font-size: 1.5rem;
+    }
+    
+    .auth-modal-subtitle {
+      font-size: 0.9rem;
+    }
+    
+    /* Smaller shapes on mobile */
+    .shape-1 {
+      width: 200px;
+      height: 200px;
+    }
+    
+    .shape-2 {
+      width: 180px;
+      height: 180px;
+    }
+    
+    .shape-3 {
+      width: 150px;
+      height: 150px;
+    }
+  }
+  
+  @media (max-width: 380px) {
+    .landing-title {
+      font-size: 1.75rem;
+    }
+    
+    .auth-modal {
+      padding: var(--space-md);
+    }
+    
+    .auth-modal-title {
+      font-size: 1.25rem;
     }
   }
