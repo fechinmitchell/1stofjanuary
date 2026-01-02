@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { useWizard } from '../context/WizardContext';
-import { useAuth } from '../context/AuthContext';
+import { WizardProvider, useWizard } from '../context/WizardContext';
 import TransitionMessage from '../components/wizard/TransitionMessage';
 import './Wizard.css';
 
@@ -28,16 +27,20 @@ import SavingForStep from '../components/wizard/SavingForStep';
 import FinalCelebrationStep from '../components/wizard/FinalCelebrationStep';
 
 const steps = [
-  // Welcome
   { 
     component: WelcomeStep, 
     key: 'welcome',
+    label: 'Welcome',
+    emoji: '👋',
+    section: 'start',
     transition: null 
   },
-  // Looking back at 2025
   { 
     component: TravelMemoryStep, 
     key: 'travel-memory',
+    label: 'Travel',
+    emoji: '✈️',
+    section: 'reflect',
     transition: {
       emoji: '✨',
       message: "Before we plan your 2026...",
@@ -47,6 +50,9 @@ const steps = [
   { 
     component: BigMomentStep, 
     key: 'big-moment',
+    label: 'Big Moments',
+    emoji: '🎯',
+    section: 'reflect',
     transition: {
       emoji: '🎯',
       message: "Now the big stuff",
@@ -56,6 +62,9 @@ const steps = [
   { 
     component: QuietJoyStep, 
     key: 'quiet-joy',
+    label: 'Quiet Joy',
+    emoji: '🌸',
+    section: 'reflect',
     transition: {
       emoji: '🌸',
       message: "What about the quiet moments?",
@@ -65,6 +74,9 @@ const steps = [
   { 
     component: HabitsStuckStep, 
     key: 'habits-stuck',
+    label: 'Habits',
+    emoji: '💪',
+    section: 'reflect',
     transition: {
       emoji: '💪',
       message: "Let's talk habits",
@@ -74,6 +86,9 @@ const steps = [
   { 
     component: PersonMadeYearStep, 
     key: 'person-made-year',
+    label: 'People',
+    emoji: '❤️',
+    section: 'reflect',
     transition: {
       emoji: '❤️',
       message: "The people in your life",
@@ -83,12 +98,17 @@ const steps = [
   { 
     component: CelebrationStep, 
     key: 'celebration',
+    label: 'Celebrate',
+    emoji: '🎉',
+    section: 'reflect',
     transition: null
   },
-  // Honest reflection
   { 
     component: WhatDidntWorkStep, 
     key: 'what-didnt-work',
+    label: "Didn't Work",
+    emoji: '🪞',
+    section: 'honest',
     transition: {
       emoji: '🪞',
       message: "Time for some honesty",
@@ -98,21 +118,29 @@ const steps = [
   { 
     component: WishedMoreTimeStep, 
     key: 'wished-more-time',
+    label: 'More Time',
+    emoji: '⏰',
+    section: 'honest',
     transition: {
       emoji: '⏰',
       message: "If only there were more hours...",
       subMessage: "What deserved more of your time?"
     }
   },
-  // Vision for 2026
   { 
     component: VisionTransitionStep, 
     key: 'vision-transition',
+    label: 'Vision',
+    emoji: '🔮',
+    section: 'vision',
     transition: null
   },
   { 
     component: KindOfPersonStep, 
     key: 'kind-of-person',
+    label: 'Become',
+    emoji: '🦋',
+    section: 'vision',
     transition: {
       emoji: '🦋',
       message: "Now let's dream",
@@ -122,6 +150,9 @@ const steps = [
   { 
     component: PerfectDayStep, 
     key: 'perfect-day',
+    label: 'Perfect Day',
+    emoji: '☀️',
+    section: 'vision',
     transition: {
       emoji: '☀️',
       message: "Picture this...",
@@ -131,21 +162,29 @@ const steps = [
   { 
     component: WantToExperienceStep, 
     key: 'want-to-experience',
+    label: 'Experience',
+    emoji: '🌈',
+    section: 'vision',
     transition: {
       emoji: '🌈',
       message: "What's calling you?",
       subMessage: "The experiences you're craving"
     }
   },
-  // Goals for 2026
   { 
     component: GoalsTransitionStep, 
     key: 'goals-transition',
+    label: 'Goals Intro',
+    emoji: '🎯',
+    section: 'goals',
     transition: null
   },
   { 
     component: GoalsDreamsStep, 
     key: 'goals-dreams',
+    label: 'Dreams',
+    emoji: '🚀',
+    section: 'goals',
     transition: {
       emoji: '🚀',
       message: "Let's make it real",
@@ -155,6 +194,9 @@ const steps = [
   { 
     component: PlaceToVisitStep, 
     key: 'place-to-visit',
+    label: 'Places',
+    emoji: '🗺️',
+    section: 'goals',
     transition: {
       emoji: '🗺️',
       message: "Adventure awaits",
@@ -164,6 +206,9 @@ const steps = [
   { 
     component: HabitToBuildStep, 
     key: 'habit-to-build',
+    label: 'New Habits',
+    emoji: '🔄',
+    section: 'goals',
     transition: {
       emoji: '🔄',
       message: "Small steps, big changes",
@@ -173,6 +218,9 @@ const steps = [
   { 
     component: SavingForStep, 
     key: 'saving-for',
+    label: 'Savings',
+    emoji: '💰',
+    section: 'goals',
     transition: {
       emoji: '💰',
       message: "Worth saving for",
@@ -182,6 +230,9 @@ const steps = [
   { 
     component: FinalCelebrationStep, 
     key: 'final-celebration',
+    label: 'Complete!',
+    emoji: '🎉',
+    section: 'finish',
     transition: {
       emoji: '🎉',
       message: "You did it!",
@@ -190,15 +241,34 @@ const steps = [
   }
 ];
 
-const Wizard = () => {
+// Section definitions for grouping
+const sections = [
+  { id: 'start', label: 'Start', color: 'var(--mint)' },
+  { id: 'reflect', label: 'Reflect', color: 'var(--coral)' },
+  { id: 'honest', label: 'Honest', color: 'var(--lavender)' },
+  { id: 'vision', label: 'Vision', color: 'var(--sky)' },
+  { id: 'goals', label: 'Goals', color: 'var(--sunshine)' },
+  { id: 'finish', label: 'Finish', color: 'var(--mint)' }
+];
+
+const WizardContent = () => {
+  const { currentStep, goToStep, answers, hasGoals } = useWizard();
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { currentStep, isLoaded, hasGoals, totalGoals } = useWizard();
   const [showTransition, setShowTransition] = useState(false);
   const [lastStep, setLastStep] = useState(-1);
+  const [showProgress, setShowProgress] = useState(false);
+
+  // Track highest step visited for navigation
+  const [highestVisited, setHighestVisited] = useState(0);
+
+  React.useEffect(() => {
+    if (currentStep > highestVisited) {
+      setHighestVisited(currentStep);
+    }
+  }, [currentStep, highestVisited]);
 
   // Check if we need to show transition
-  useEffect(() => {
+  React.useEffect(() => {
     if (currentStep > lastStep && steps[currentStep]?.transition) {
       setShowTransition(true);
     }
@@ -206,97 +276,169 @@ const Wizard = () => {
   }, [currentStep, lastStep]);
 
   // If we've gone past all steps, go to dashboard
-  useEffect(() => {
-    if (currentStep >= steps.length) {
-      navigate('/dashboard');
-    }
-  }, [currentStep, navigate]);
-
-  const handleTransitionComplete = () => {
-    setShowTransition(false);
-  };
-
-  const handleExit = () => {
-    if (hasGoals) {
-      navigate('/dashboard');
-    } else {
-      navigate('/');
-    }
-  };
-
-  const handleGoToDashboard = () => {
-    navigate('/dashboard');
-  };
-
-  // Show loading state
-  if (!isLoaded) {
-    return (
-      <div className="wizard">
-        <div className="wizard-bg">
-          <div className="wizard-orb wizard-orb-1"></div>
-          <div className="wizard-orb wizard-orb-2"></div>
-          <div className="wizard-orb wizard-orb-3"></div>
-        </div>
-        <div className="wizard-loading">
-          <div className="wizard-loading-icon">🎯</div>
-          <p>Loading your journey...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // If past all steps, show nothing (will redirect)
   if (currentStep >= steps.length) {
+    navigate('/dashboard');
     return null;
   }
 
   const currentStepData = steps[currentStep];
   const CurrentStepComponent = currentStepData.component;
-  const progress = ((currentStep + 1) / steps.length) * 100;
+
+  const handleTransitionComplete = () => {
+    setShowTransition(false);
+  };
+
+  const handleStepClick = (index) => {
+    // Can only navigate to visited steps or next step
+    if (index <= highestVisited + 1) {
+      goToStep(index);
+      setShowProgress(false);
+    }
+  };
+
+  const isStepCompleted = (index) => {
+    return index < currentStep;
+  };
+
+  const isStepAccessible = (index) => {
+    return index <= highestVisited + 1;
+  };
+
+  // Get current section
+  const currentSection = sections.find(s => s.id === currentStepData.section);
 
   return (
     <div className="wizard">
-      {/* Animated Background */}
-      <div className="wizard-bg">
-        <div className="wizard-orb wizard-orb-1"></div>
-        <div className="wizard-orb wizard-orb-2"></div>
-        <div className="wizard-orb wizard-orb-3"></div>
-      </div>
-
-      {/* Header */}
+      {/* Header with progress */}
       <header className="wizard-header">
-        <div className="wizard-header-content">
-          <div className="wizard-logo" onClick={() => navigate('/')}>
-            <span className="wizard-logo-icon">🎯</span>
-            <span className="wizard-logo-text">1st of January</span>
-          </div>
-          <div className="wizard-header-right">
-            {hasGoals && (
-              <button className="wizard-dashboard-btn" onClick={handleGoToDashboard}>
-                <span className="wizard-dashboard-btn-icon">📊</span>
-                <span className="wizard-dashboard-btn-text">My Dashboard</span>
-              </button>
-            )}
-            <button className="wizard-exit" onClick={handleExit}>
-              {hasGoals ? 'Save & Exit' : 'Exit'}
-            </button>
+        <button 
+          className="wizard-home-btn"
+          onClick={() => navigate('/')}
+          title="Back to home"
+        >
+          <span className="wizard-home-icon">🏠</span>
+          <span className="wizard-home-text">Home</span>
+        </button>
+
+        <div className="wizard-progress-container">
+          <button 
+            className="wizard-progress-toggle"
+            onClick={() => setShowProgress(!showProgress)}
+          >
+            <span className="progress-current-emoji">{currentStepData.emoji}</span>
+            <span className="progress-current-label">{currentStepData.label}</span>
+            <span className="progress-step-count">{currentStep + 1}/{steps.length}</span>
+            <span className={`progress-chevron ${showProgress ? 'open' : ''}`}>▼</span>
+          </button>
+
+          {/* Mini progress dots (always visible) */}
+          <div className="wizard-mini-progress">
+            {steps.map((step, index) => (
+              <div
+                key={step.key}
+                className={`mini-dot ${index === currentStep ? 'active' : ''} ${isStepCompleted(index) ? 'completed' : ''}`}
+                style={{ 
+                  backgroundColor: index === currentStep 
+                    ? sections.find(s => s.id === step.section)?.color 
+                    : undefined 
+                }}
+              />
+            ))}
           </div>
         </div>
+
+        {hasGoals && (
+          <button 
+            className="wizard-dashboard-btn"
+            onClick={() => navigate('/dashboard')}
+            title="Go to dashboard"
+          >
+            <span className="wizard-dashboard-icon">📊</span>
+            <span className="wizard-dashboard-text">Dashboard</span>
+          </button>
+        )}
       </header>
 
-      {/* Progress Bar */}
-      <div className="wizard-progress">
-        <div className="wizard-progress-content">
-          <div className="progress-bar-container">
-            <div className="progress-bar">
-              <div 
-                className="progress-bar-fill" 
-                style={{ width: `${progress}%` }}
-              ></div>
+      {/* Expanded progress panel */}
+      <AnimatePresence>
+        {showProgress && (
+          <motion.div 
+            className="wizard-progress-panel"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="progress-panel-content">
+              {sections.map(section => {
+                const sectionSteps = steps.filter(s => s.section === section.id);
+                if (sectionSteps.length === 0) return null;
+
+                return (
+                  <div key={section.id} className="progress-section">
+                    <div 
+                      className="progress-section-header"
+                      style={{ borderLeftColor: section.color }}
+                    >
+                      {section.label}
+                    </div>
+                    <div className="progress-section-steps">
+                      {sectionSteps.map(step => {
+                        const stepIndex = steps.findIndex(s => s.key === step.key);
+                        const completed = isStepCompleted(stepIndex);
+                        const accessible = isStepAccessible(stepIndex);
+                        const isCurrent = stepIndex === currentStep;
+
+                        return (
+                          <button
+                            key={step.key}
+                            className={`progress-step-btn ${completed ? 'completed' : ''} ${isCurrent ? 'current' : ''} ${!accessible ? 'locked' : ''}`}
+                            onClick={() => accessible && handleStepClick(stepIndex)}
+                            disabled={!accessible}
+                            style={{ 
+                              borderColor: isCurrent ? section.color : undefined,
+                              backgroundColor: isCurrent ? `${section.color}15` : undefined
+                            }}
+                          >
+                            <span className="progress-step-emoji">
+                              {completed ? '✓' : step.emoji}
+                            </span>
+                            <span className="progress-step-label">{step.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-            <span className="progress-text">{currentStep + 1} / {steps.length}</span>
-          </div>
-        </div>
+            <button 
+              className="progress-panel-close"
+              onClick={() => setShowProgress(false)}
+            >
+              Close ✕
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Click outside to close progress panel */}
+      {showProgress && (
+        <div 
+          className="progress-panel-overlay"
+          onClick={() => setShowProgress(false)}
+        />
+      )}
+
+      {/* Progress bar */}
+      <div className="wizard-progress-bar-container">
+        <div 
+          className="wizard-progress-bar" 
+          style={{ 
+            width: `${((currentStep + 1) / steps.length) * 100}%`,
+            backgroundColor: currentSection?.color
+          }}
+        />
       </div>
 
       {/* Transition Message */}
@@ -311,43 +453,35 @@ const Wizard = () => {
 
       {/* Main Step Content */}
       {!showTransition && (
-        <main className="wizard-content">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentStep}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="wizard-step"
-            >
-              <CurrentStepComponent />
-            </motion.div>
-          </AnimatePresence>
-        </main>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            className="wizard-step"
+          >
+            <CurrentStepComponent />
+          </motion.div>
+        </AnimatePresence>
       )}
 
-      {/* Floating shapes */}
+      {/* Background shapes */}
       <div className="wizard-shapes">
         <div className="shape shape-1"></div>
         <div className="shape shape-2"></div>
         <div className="shape shape-3"></div>
       </div>
-
-      {/* Show dashboard shortcut banner if user has goals and is on first step */}
-      {hasGoals && currentStep === 0 && (
-        <div className="wizard-return-banner">
-          <div className="wizard-return-content">
-            <span className="wizard-return-text">
-              👋 Welcome back! You have <strong>{totalGoals}</strong> goals saved.
-            </span>
-            <button className="wizard-return-btn" onClick={handleGoToDashboard}>
-              Go to Dashboard →
-            </button>
-          </div>
-        </div>
-      )}
     </div>
+  );
+};
+
+const Wizard = () => {
+  return (
+    <WizardProvider>
+      <WizardContent />
+    </WizardProvider>
   );
 };
 
