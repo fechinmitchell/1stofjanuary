@@ -2,8 +2,24 @@
 /* SHARED WIZARD STEP STYLES      */
 /* ============================== */
 
-/* Welcome Step */
-.welcome-step {
+/* ============================== */
+/* STEP CARD (CONTAINER)          */
+/* ============================== */
+.step-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: var(--space-xl);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    text-align: center;
+  }
+  
+  /* ============================== */
+  /* WELCOME STEP                   */
+  /* ============================== */
+  .welcome-step {
     text-align: center;
   }
   
@@ -288,8 +304,31 @@
   /* TRANSITION MESSAGE             */
   /* ============================== */
   .transition-message {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    background: linear-gradient(135deg, #FFF6F0 0%, #F0F9FF 50%, #F5F0FF 100%);
     text-align: center;
-    padding: var(--space-xl) 0;
+    padding: var(--space-xl);
+  }
+  
+  .transition-content {
+    animation: fadeInScale 0.5s ease;
+  }
+  
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
   
   .transition-icon {
@@ -332,85 +371,6 @@
   }
   
   .transition-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
-  }
-  
-  /* ============================== */
-  /* FINAL CELEBRATION              */
-  /* ============================== */
-  .final-celebration {
-    text-align: center;
-    padding: var(--space-xl) 0;
-  }
-  
-  .final-icon {
-    font-size: 5rem;
-    margin-bottom: var(--space-lg);
-    display: block;
-    animation: celebrate 0.5s ease-in-out;
-  }
-  
-  @keyframes celebrate {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-  }
-  
-  .final-title {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--text-dark);
-    margin-bottom: var(--space-md);
-  }
-  
-  .final-subtitle {
-    font-size: 1.1rem;
-    color: var(--text-medium);
-    margin-bottom: var(--space-xl);
-    line-height: 1.6;
-  }
-  
-  .final-stats {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-xl);
-    margin-bottom: var(--space-xl);
-    flex-wrap: wrap;
-  }
-  
-  .stat-item {
-    text-align: center;
-  }
-  
-  .stat-number {
-    font-size: 2.5rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--coral) 0%, var(--lavender) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .stat-label {
-    font-size: 0.9rem;
-    color: var(--text-medium);
-  }
-  
-  .final-btn {
-    padding: var(--space-md) var(--space-xxl);
-    background: linear-gradient(135deg, var(--coral) 0%, var(--lavender) 100%);
-    color: white;
-    font-weight: 700;
-    font-size: 1.1rem;
-    border-radius: var(--radius-full);
-    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
-    transition: all var(--transition-fast);
-    border: none;
-    cursor: pointer;
-  }
-  
-  .final-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
   }
@@ -513,14 +473,189 @@
   }
   
   /* ============================== */
+  /* VISION TRANSITION STEP         */
+  /* ============================== */
+  .vision-transition-step {
+    text-align: center;
+  }
+  
+  .vision-icon {
+    font-size: 5rem;
+    margin-bottom: var(--space-lg);
+    display: block;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .vision-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: var(--space-md);
+  }
+  
+  .vision-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-medium);
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
+  }
+  
+  .vision-btn {
+    padding: var(--space-md) var(--space-xxl);
+    background: linear-gradient(135deg, var(--coral) 0%, var(--lavender) 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+    transition: all var(--transition-fast);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .vision-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
+  }
+  
+  /* ============================== */
+  /* GOALS TRANSITION STEP          */
+  /* ============================== */
+  .goals-transition-step {
+    text-align: center;
+  }
+  
+  .goals-transition-icon {
+    font-size: 5rem;
+    margin-bottom: var(--space-lg);
+    display: block;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .goals-transition-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: var(--space-md);
+  }
+  
+  .goals-transition-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-medium);
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
+  }
+  
+  .goals-transition-btn {
+    padding: var(--space-md) var(--space-xxl);
+    background: linear-gradient(135deg, var(--coral) 0%, var(--lavender) 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+    transition: all var(--transition-fast);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .goals-transition-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
+  }
+  
+  /* ============================== */
+  /* FINAL CELEBRATION              */
+  /* ============================== */
+  .final-celebration {
+    text-align: center;
+    padding: var(--space-xl) 0;
+  }
+  
+  .final-icon {
+    font-size: 5rem;
+    margin-bottom: var(--space-lg);
+    display: block;
+    animation: celebrate 0.5s ease-in-out;
+  }
+  
+  @keyframes celebrate {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  
+  .final-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: var(--space-md);
+  }
+  
+  .final-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-medium);
+    margin-bottom: var(--space-xl);
+    line-height: 1.6;
+  }
+  
+  .final-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-xl);
+    flex-wrap: wrap;
+  }
+  
+  .stat-item {
+    text-align: center;
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--coral) 0%, var(--lavender) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .stat-label {
+    font-size: 0.9rem;
+    color: var(--text-medium);
+  }
+  
+  .final-btn {
+    padding: var(--space-md) var(--space-xxl);
+    background: linear-gradient(135deg, var(--coral) 0%, var(--lavender) 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.3);
+    transition: all var(--transition-fast);
+    border: none;
+    cursor: pointer;
+  }
+  
+  .final-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(255, 107, 107, 0.4);
+  }
+  
+  /* ============================== */
   /* PERFECT DAY STEP               */
   /* ============================== */
+  .perfect-day-step {
+    text-align: center;
+  }
+  
   .perfect-day-textarea {
     width: 100%;
     min-height: 150px;
     padding: var(--space-md);
     font-size: 1rem;
-    font-family: var(--font-handwritten), cursive;
+    font-family: var(--font-handwritten), var(--font-body), sans-serif;
     border: 2px solid var(--bg-light);
     border-radius: var(--radius-lg);
     background: white;
@@ -638,10 +773,89 @@
     color: var(--text-medium);
   }
   
+  /* ============================== */
+  /* EMPTY STATE                    */
+  /* ============================== */
+  .empty-state {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--text-light);
+  }
+  
+  .empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-md);
+    opacity: 0.5;
+  }
+  
+  .empty-state-text {
+    font-size: 0.95rem;
+  }
+  
+  /* ============================== */
+  /* HINT TEXT                      */
+  /* ============================== */
+  .hint-text {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: var(--space-md);
+    text-align: center;
+    font-style: italic;
+  }
+  
+  /* ============================== */
+  /* COUNT BADGE                    */
+  /* ============================== */
+  .count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--coral) 0%, var(--lavender) 100%);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    min-width: 24px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    padding: 0 var(--space-xs);
+    margin-left: var(--space-xs);
+  }
+  
+  /* ============================== */
+  /* PROGRESS INDICATOR             */
+  /* ============================== */
+  .step-progress-indicator {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
+  }
+  
+  .progress-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--bg-light);
+    transition: all var(--transition-fast);
+  }
+  
+  .progress-dot.active {
+    background: var(--coral);
+    transform: scale(1.2);
+  }
+  
+  .progress-dot.completed {
+    background: var(--mint);
+  }
+  
   /* ================================================ */
   /* RESPONSIVE - TABLET (768px - 1024px)             */
   /* ================================================ */
   @media (max-width: 1024px) {
+    .step-card {
+      padding: var(--space-lg);
+    }
+    
     .welcome-icon {
       font-size: 4.5rem;
     }
@@ -661,12 +875,34 @@
     .options-grid {
       grid-template-columns: repeat(3, 1fr);
     }
+    
+    .transition-icon,
+    .celebration-icon,
+    .vision-icon,
+    .goals-transition-icon,
+    .final-icon {
+      font-size: 4.5rem;
+    }
+    
+    .transition-title,
+    .celebration-title,
+    .vision-title,
+    .goals-transition-title,
+    .final-title {
+      font-size: 1.75rem;
+    }
   }
   
   /* ================================================ */
   /* RESPONSIVE - MOBILE (max-width: 768px)           */
   /* ================================================ */
   @media (max-width: 768px) {
+    /* Step Card */
+    .step-card {
+      padding: var(--space-lg) var(--space-md);
+      border-radius: var(--radius-lg);
+    }
+    
     /* Welcome */
     .welcome-icon {
       font-size: 3.5rem;
@@ -782,7 +1018,7 @@
     
     /* Transition */
     .transition-message {
-      padding: var(--space-lg) 0;
+      padding: var(--space-lg);
     }
     
     .transition-icon {
@@ -801,6 +1037,82 @@
     }
     
     .transition-btn {
+      width: 100%;
+      padding: var(--space-md);
+      font-size: 1rem;
+    }
+    
+    /* Intro */
+    .intro-icon {
+      font-size: 3rem;
+    }
+    
+    .intro-title {
+      font-size: 1.35rem;
+    }
+    
+    .intro-subtitle {
+      font-size: 0.9rem;
+    }
+    
+    .intro-btn {
+      width: 100%;
+      padding: var(--space-md);
+      font-size: 1rem;
+    }
+    
+    /* Celebration */
+    .celebration-icon {
+      font-size: 3.5rem;
+    }
+    
+    .celebration-title {
+      font-size: 1.5rem;
+    }
+    
+    .celebration-subtitle {
+      font-size: 0.95rem;
+    }
+    
+    .celebration-btn {
+      width: 100%;
+      padding: var(--space-md);
+      font-size: 1rem;
+    }
+    
+    /* Vision Transition */
+    .vision-icon {
+      font-size: 3.5rem;
+    }
+    
+    .vision-title {
+      font-size: 1.5rem;
+    }
+    
+    .vision-subtitle {
+      font-size: 0.95rem;
+    }
+    
+    .vision-btn {
+      width: 100%;
+      padding: var(--space-md);
+      font-size: 1rem;
+    }
+    
+    /* Goals Transition */
+    .goals-transition-icon {
+      font-size: 3.5rem;
+    }
+    
+    .goals-transition-title {
+      font-size: 1.5rem;
+    }
+    
+    .goals-transition-subtitle {
+      font-size: 0.95rem;
+    }
+    
+    .goals-transition-btn {
       width: 100%;
       padding: var(--space-md);
       font-size: 1rem;
@@ -845,44 +1157,6 @@
       font-size: 1rem;
     }
     
-    /* Intro */
-    .intro-icon {
-      font-size: 3rem;
-    }
-    
-    .intro-title {
-      font-size: 1.35rem;
-    }
-    
-    .intro-subtitle {
-      font-size: 0.9rem;
-    }
-    
-    .intro-btn {
-      width: 100%;
-      padding: var(--space-md);
-      font-size: 1rem;
-    }
-    
-    /* Celebration */
-    .celebration-icon {
-      font-size: 3.5rem;
-    }
-    
-    .celebration-title {
-      font-size: 1.5rem;
-    }
-    
-    .celebration-subtitle {
-      font-size: 0.95rem;
-    }
-    
-    .celebration-btn {
-      width: 100%;
-      padding: var(--space-md);
-      font-size: 1rem;
-    }
-    
     /* Perfect Day */
     .perfect-day-textarea {
       min-height: 120px;
@@ -905,18 +1179,26 @@
   /* RESPONSIVE - SMALL PHONE (max-width: 380px)      */
   /* ================================================ */
   @media (max-width: 380px) {
+    .step-card {
+      padding: var(--space-md);
+    }
+    
     .welcome-icon,
     .question-icon,
     .transition-icon,
     .final-icon,
     .intro-icon,
-    .celebration-icon {
+    .celebration-icon,
+    .vision-icon,
+    .goals-transition-icon {
       font-size: 2.5rem;
     }
     
     .welcome-title,
     .final-title,
-    .celebration-title {
+    .celebration-title,
+    .vision-title,
+    .goals-transition-title {
       font-size: 1.25rem;
     }
     
@@ -931,7 +1213,9 @@
     .transition-subtitle,
     .final-subtitle,
     .intro-subtitle,
-    .celebration-subtitle {
+    .celebration-subtitle,
+    .vision-subtitle,
+    .goals-transition-subtitle {
       font-size: 0.85rem;
     }
     
@@ -963,12 +1247,18 @@
   /* RESPONSIVE - LANDSCAPE PHONE                     */
   /* ================================================ */
   @media (max-height: 500px) and (orientation: landscape) {
+    .step-card {
+      padding: var(--space-md);
+    }
+    
     .welcome-icon,
     .question-icon,
     .transition-icon,
     .final-icon,
     .intro-icon,
-    .celebration-icon {
+    .celebration-icon,
+    .vision-icon,
+    .goals-transition-icon {
       font-size: 2rem;
       margin-bottom: var(--space-xs);
     }
@@ -978,7 +1268,9 @@
     .transition-title,
     .final-title,
     .intro-title,
-    .celebration-title {
+    .celebration-title,
+    .vision-title,
+    .goals-transition-title {
       font-size: 1.1rem;
       margin-bottom: var(--space-xs);
     }
@@ -988,7 +1280,9 @@
     .transition-subtitle,
     .final-subtitle,
     .intro-subtitle,
-    .celebration-subtitle {
+    .celebration-subtitle,
+    .vision-subtitle,
+    .goals-transition-subtitle {
       font-size: 0.8rem;
       margin-bottom: var(--space-md);
     }
@@ -1031,7 +1325,10 @@
       gap: var(--space-lg);
     }
     
-    .transition-message,
+    .transition-message {
+      padding: var(--space-md);
+    }
+    
     .final-celebration {
       padding: var(--space-sm) 0;
     }
@@ -1044,6 +1341,8 @@
     .intro-btn,
     .transition-btn,
     .celebration-btn,
+    .vision-btn,
+    .goals-transition-btn,
     .final-btn {
       width: auto;
       padding: var(--space-sm) var(--space-xl);
@@ -1054,6 +1353,10 @@
   /* RESPONSIVE - IPAD (768px - 1024px)               */
   /* ================================================ */
   @media (min-width: 768px) and (max-width: 1024px) {
+    .step-card {
+      padding: var(--space-xl);
+    }
+    
     .welcome-icon {
       font-size: 4rem;
     }
@@ -1101,6 +1404,10 @@
   /* LARGE SCREENS (min-width: 1200px)                */
   /* ================================================ */
   @media (min-width: 1200px) {
+    .step-card {
+      padding: var(--space-xxl);
+    }
+    
     .welcome-icon {
       font-size: 5.5rem;
     }
@@ -1127,5 +1434,68 @@
     
     .options-grid {
       grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .transition-icon,
+    .celebration-icon,
+    .vision-icon,
+    .goals-transition-icon,
+    .final-icon {
+      font-size: 5.5rem;
+    }
+    
+    .transition-title,
+    .celebration-title,
+    .vision-title,
+    .goals-transition-title,
+    .final-title {
+      font-size: 2.25rem;
+    }
+  }
+  
+  /* ================================================ */
+  /* REDUCED MOTION                                   */
+  /* ================================================ */
+  @media (prefers-reduced-motion: reduce) {
+    .welcome-icon,
+    .transition-icon,
+    .celebration-icon,
+    .vision-icon,
+    .goals-transition-icon {
+      animation: none;
+    }
+    
+    .answer-tag {
+      animation: none;
+    }
+    
+    .final-icon {
+      animation: none;
+    }
+  }
+  
+  /* ================================================ */
+  /* HIGH CONTRAST MODE                               */
+  /* ================================================ */
+  @media (prefers-contrast: high) {
+    .step-card {
+      background: white;
+      border: 2px solid var(--text-dark);
+    }
+    
+    .answer-tag {
+      border: 2px solid var(--text-dark);
+    }
+    
+    .input-row input {
+      border: 2px solid var(--text-dark);
+    }
+    
+    .suggestion-btn {
+      border: 1px solid var(--text-medium);
+    }
+    
+    .option-btn {
+      border: 2px solid var(--text-dark);
     }
   }
