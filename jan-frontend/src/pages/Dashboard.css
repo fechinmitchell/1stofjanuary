@@ -195,6 +195,10 @@
     background: var(--bg-light);
     transform: scale(1.1);
   }
+
+  .dashboard-icon-btn.active {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.15) 0%, rgba(167, 139, 250, 0.15) 100%);
+  }
   
   /* Saving Indicator */
   .saving-indicator {
@@ -533,12 +537,23 @@
   }
   
   /* Show all goals on hover */
-  .goal-card:hover .goal-list li.hidden-goal {
+  .goal-card:hover .goal-list li.hidden-goal,
+  .goal-card.expanded .goal-list li.hidden-goal {
     display: list-item;
   }
   
-  .goal-card:hover .goal-more {
+  .goal-card:hover .goal-more,
+  .goal-card.expanded .goal-more {
     display: none;
+  }
+
+  /* Expanded card adjustments */
+  .goal-card.expanded {
+    min-height: auto;
+  }
+
+  .goal-card.expanded .goal-card-content {
+    overflow: visible;
   }
   
   /* Card Colors */

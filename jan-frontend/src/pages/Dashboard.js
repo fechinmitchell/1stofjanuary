@@ -35,6 +35,7 @@ const Dashboard = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeYear, setActiveYear] = useState(2026);
   const [visibleCards, setVisibleCards] = useState([]);
+  const [expandedCards, setExpandedCards] = useState(false);
 
   const firstName = user?.displayName?.split(' ')[0] || 'friend';
   const CONFIRM_PHRASE = "I'm starting fresh";
@@ -313,6 +314,13 @@ const Dashboard = () => {
               ✏️
             </button>
             <button 
+              className={`dashboard-icon-btn ${expandedCards ? 'active' : ''}`}
+              onClick={() => setExpandedCards(!expandedCards)}
+              title={expandedCards ? "Collapse All" : "Expand All"}
+            >
+              {expandedCards ? '📖' : '📕'}
+            </button>
+            <button 
               className="dashboard-icon-btn" 
               onClick={() => setShowSettingsModal(true)}
               title="Settings"
@@ -421,7 +429,7 @@ const Dashboard = () => {
             return (
               <div 
                 key={section.key}
-                className={`goal-card ${section.color} ${isVisible ? 'visible' : ''}`}
+                className={`goal-card ${section.color} ${isVisible ? 'visible' : ''} ${expandedCards ? 'expanded' : ''}`}
                 style={{ '--delay': `${index * 0.08}s` }}
               >
                 <div className="goal-card-header">
