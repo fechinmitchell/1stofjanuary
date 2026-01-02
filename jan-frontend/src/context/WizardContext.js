@@ -12,20 +12,36 @@ export const useWizard = () => {
   return context;
 };
 
+// Total number of steps in the wizard
+const TOTAL_STEPS = 19;
+
 export const WizardProvider = ({ children }) => {
   const { user } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
+  const [highestVisited, setHighestVisited] = useState(0);
   const [answers, setAnswers] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   const currentYear = 2026;
 
-  // Load answers when user logs in
+  // Load answers and progress when user logs in
   useEffect(() => {
     const loadAnswers = async () => {
       if (user) {
         setIsLoaded(false);
+        
+        // Load wizard progress from localStorage
+        const savedProgress = localStorage.getItem(`wizard_progress_${user.uid}`);
+        if (savedProgress) {
+          try {
+            const progress = JSON.parse(savedProgress);
+            setCurrentStep(progress.currentStep || 0);
+            setHighestVisited(progress.highestVisited || 0);
+          } catch (e) {
+            console.log('Could not parse wizard progress');
+          }
+        }
         
         // First check localStorage for immediate display
         const savedAnswers = localStorage.getItem(`wizard_answers_${user.uid}`);
@@ -62,12 +78,32 @@ export const WizardProvider = ({ children }) => {
         setIsLoaded(true);
       } else {
         setAnswers({});
+        setCurrentStep(0);
+        setHighestVisited(0);
         setIsLoaded(true);
       }
     };
 
     loadAnswers();
   }, [user]);
+
+  // Save progress to localStorage when step changes
+  useEffect(() => {
+    if (user && isLoaded) {
+      const progress = {
+        currentStep,
+        highestVisited
+      };
+      localStorage.setItem(`wizard_progress_${user.uid}`, JSON.stringify(progress));
+    }
+  }, [currentStep, highestVisited, user, isLoaded]);
+
+  // Update highest visited when current step advances
+  useEffect(() => {
+    if (currentStep > highestVisited) {
+      setHighestVisited(currentStep);
+    }
+  }, [currentStep, highestVisited]);
 
   // Save answers when they change
   useEffect(() => {
@@ -116,9 +152,11 @@ export const WizardProvider = ({ children }) => {
   const resetWizard = useCallback(async () => {
     setAnswers({});
     setCurrentStep(0);
+    setHighestVisited(0);
     if (user) {
       // Clear localStorage
       localStorage.removeItem(`wizard_answers_${user.uid}`);
+      localStorage.removeItem(`wizard_progress_${user.uid}`);
       
       // Delete from cloud
       try {
@@ -146,9 +184,19 @@ export const WizardProvider = ({ children }) => {
     return total;
   }, 0);
 
+  // Check if wizard is complete (reached final step)
+  const wizardComplete = highestVisited >= TOTAL_STEPS - 1;
+
+  // Check if wizard is in progress (started but not complete)
+  const wizardInProgress = highestVisited > 0 && !wizardComplete;
+
+  // Get progress percentage
+  const progressPercent = Math.round((highestVisited / (TOTAL_STEPS - 1)) * 100);
+
   return (
     <WizardContext.Provider value={{
       currentStep,
+      highestVisited,
       answers,
       updateAnswer,
       nextStep,
@@ -158,7 +206,11 @@ export const WizardProvider = ({ children }) => {
       isLoaded,
       isSaving,
       hasGoals,
-      totalGoals
+      totalGoals,
+      wizardComplete,
+      wizardInProgress,
+      progressPercent,
+      totalSteps: TOTAL_STEPS
     }}>
       {children}
     </WizardContext.Provider>

@@ -8,7 +8,16 @@ import './Dashboard.css';
 
 const Dashboard = () => {
   const { user, logout } = useAuth();
-  const { answers, isLoaded, isSaving, resetWizard } = useWizard();
+  const { 
+    answers, 
+    isLoaded, 
+    isSaving, 
+    resetWizard,
+    wizardInProgress,
+    progressPercent,
+    highestVisited,
+    goToStep
+  } = useWizard();
   const navigate = useNavigate();
   const [showShareCard, setShowShareCard] = useState(false);
   const [show2027Modal, setShow2027Modal] = useState(false);
@@ -158,6 +167,12 @@ const Dashboard = () => {
     navigate('/wizard');
   };
 
+  const handleContinueWizard = () => {
+    // Navigate to wizard and go to the last visited step
+    goToStep(highestVisited);
+    navigate('/wizard');
+  };
+
   const handleYearClick = (year) => {
     if (year === 2027) {
       setShow2027Modal(true);
@@ -202,6 +217,7 @@ const Dashboard = () => {
         // Clear localStorage
         if (user) {
           localStorage.removeItem(`wizard_answers_${user.uid}`);
+          localStorage.removeItem(`wizard_progress_${user.uid}`);
         }
         // Reset wizard state AND delete cloud data
         await resetWizard();
@@ -303,6 +319,30 @@ const Dashboard = () => {
         </div>
       </header>
 
+      {/* Continue Wizard Banner - Shows when wizard is in progress */}
+      {wizardInProgress && (
+        <div className="continue-wizard-banner">
+          <div className="continue-wizard-content">
+            <div className="continue-wizard-info">
+              <span className="continue-wizard-icon">✨</span>
+              <div className="continue-wizard-text">
+                <span className="continue-wizard-title">Continue your journey</span>
+                <span className="continue-wizard-progress">{progressPercent}% complete</span>
+              </div>
+            </div>
+            <div className="continue-wizard-progress-bar">
+              <div 
+                className="continue-wizard-progress-fill" 
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
+            <button className="continue-wizard-btn" onClick={handleContinueWizard}>
+              Continue →
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Year Tabs */}
       <div className="year-tabs-container">
         <div className="year-tabs">
@@ -345,11 +385,24 @@ const Dashboard = () => {
               : 'Start building your vision for the year ahead'
             }
           </p>
-          {totalItems === 0 && (
-            <button className="hero-btn primary" onClick={handleStartWizard}>
-              🚀 Get Started
-            </button>
-          )}
+          <div className="hero-buttons">
+            {totalItems === 0 ? (
+              <button className="hero-btn primary" onClick={handleStartWizard}>
+                🚀 Get Started
+              </button>
+            ) : (
+              <>
+                <button className="hero-btn primary" onClick={handleStartWizard}>
+                  ✏️ Edit Goals
+                </button>
+                {wizardInProgress && (
+                  <button className="hero-btn secondary" onClick={handleContinueWizard}>
+                    Continue Wizard ({progressPercent}%)
+                  </button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
 
