@@ -13,6 +13,7 @@ const Dashboard = () => {
     isLoaded, 
     isSaving, 
     resetWizard,
+    updateAnswer,
     wizardInProgress,
     progressPercent,
     highestVisited,
@@ -39,6 +40,8 @@ const Dashboard = () => {
   const [editingCard, setEditingCard] = useState(null);
   const [hiddenGoals, setHiddenGoals] = useState({});
   const [blurHidden, setBlurHidden] = useState(false);
+  const [editingGoalIndex, setEditingGoalIndex] = useState(null);
+  const [editingGoalText, setEditingGoalText] = useState('');
 
   const firstName = user?.displayName?.split(' ')[0] || 'friend';
   const CONFIRM_PHRASE = "I'm starting fresh";
@@ -210,6 +213,60 @@ const Dashboard = () => {
   };
 
   const hasHiddenGoals = Object.keys(hiddenGoals).length > 0;
+
+  const startEditingGoal = (index, text) => {
+    setEditingGoalIndex(index);
+    setEditingGoalText(text);
+  };
+
+  const saveGoalEdit = () => {
+    if (editingCard && editingGoalIndex !== null) {
+      const currentGoals = [...(answers[editingCard.key] || [])];
+      if (editingGoalText.trim()) {
+        currentGoals[editingGoalIndex] = editingGoalText.trim();
+      } else {
+        // If empty, remove the goal
+        currentGoals.splice(editingGoalIndex, 1);
+        // Also remove from hidden if it was hidden
+        const key = `${editingCard.key}-${editingGoalIndex}`;
+        if (hiddenGoals[key]) {
+          const newHidden = { ...hiddenGoals };
+          delete newHidden[key];
+          setHiddenGoals(newHidden);
+        }
+      }
+      updateAnswer(editingCard.key, currentGoals);
+    }
+    setEditingGoalIndex(null);
+    setEditingGoalText('');
+  };
+
+  const deleteGoal = (index) => {
+    if (editingCard) {
+      const currentGoals = [...(answers[editingCard.key] || [])];
+      currentGoals.splice(index, 1);
+      updateAnswer(editingCard.key, currentGoals);
+      // Remove from hidden if it was hidden
+      const key = `${editingCard.key}-${index}`;
+      if (hiddenGoals[key]) {
+        const newHidden = { ...hiddenGoals };
+        delete newHidden[key];
+        setHiddenGoals(newHidden);
+      }
+    }
+  };
+
+  const addNewGoal = () => {
+    if (editingCard) {
+      const currentGoals = [...(answers[editingCard.key] || [])];
+      currentGoals.push('New goal');
+      updateAnswer(editingCard.key, currentGoals);
+      // Start editing the new goal
+      setTimeout(() => {
+        startEditingGoal(currentGoals.length - 1, 'New goal');
+      }, 100);
+    }
+  };
 
   const handleShareClick = () => {
     if (totalItems > 0) {
@@ -821,9 +878,9 @@ const Dashboard = () => {
 
       {/* Edit Card Modal */}
       {editingCard && (
-        <div className="modal-overlay" onClick={() => setEditingCard(null)}>
+        <div className="modal-overlay" onClick={() => { setEditingCard(null); setEditingGoalIndex(null); }}>
           <div className="modal-content glass-modal edit-card-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setEditingCard(null)}>×</button>
+            <button className="modal-close" onClick={() => { setEditingCard(null); setEditingGoalIndex(null); }}>×</button>
             
             <div className="edit-card-header">
               <span className="edit-card-icon">{editingCard.icon}</span>
@@ -831,7 +888,7 @@ const Dashboard = () => {
             </div>
             
             <p className="edit-card-hint">
-              👁️ Click the eye to hide goals when sharing
+              ✏️ Click to edit • 👁️ Hide for sharing • 🗑️ Delete
             </p>
             
             <div className="edit-card-goals">
@@ -840,14 +897,43 @@ const Dashboard = () => {
                   key={idx} 
                   className={`edit-goal-item ${isGoalHidden(editingCard.key, idx) ? 'hidden-item' : ''}`}
                 >
-                  <span className="edit-goal-text">{item}</span>
-                  <button 
-                    className="edit-goal-visibility"
-                    onClick={() => toggleGoalHidden(editingCard.key, idx)}
-                    title={isGoalHidden(editingCard.key, idx) ? "Show this goal" : "Hide this goal"}
-                  >
-                    {isGoalHidden(editingCard.key, idx) ? '🙈' : '👁️'}
-                  </button>
+                  {editingGoalIndex === idx ? (
+                    <input
+                      type="text"
+                      className="edit-goal-input"
+                      value={editingGoalText}
+                      onChange={(e) => setEditingGoalText(e.target.value)}
+                      onBlur={saveGoalEdit}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') saveGoalEdit();
+                        if (e.key === 'Escape') { setEditingGoalIndex(null); setEditingGoalText(''); }
+                      }}
+                      autoFocus
+                    />
+                  ) : (
+                    <span 
+                      className="edit-goal-text"
+                      onClick={() => startEditingGoal(idx, item)}
+                    >
+                      {item}
+                    </span>
+                  )}
+                  <div className="edit-goal-actions">
+                    <button 
+                      className="edit-goal-btn"
+                      onClick={() => toggleGoalHidden(editingCard.key, idx)}
+                      title={isGoalHidden(editingCard.key, idx) ? "Show this goal" : "Hide this goal"}
+                    >
+                      {isGoalHidden(editingCard.key, idx) ? '🙈' : '👁️'}
+                    </button>
+                    <button 
+                      className="edit-goal-btn delete"
+                      onClick={() => deleteGoal(idx)}
+                      title="Delete this goal"
+                    >
+                      🗑️
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -855,16 +941,13 @@ const Dashboard = () => {
             <div className="edit-card-actions">
               <button 
                 className="edit-card-btn secondary"
-                onClick={() => {
-                  setEditingCard(null);
-                  handleStartWizard();
-                }}
+                onClick={addNewGoal}
               >
-                ✏️ Edit in Wizard
+                + Add Goal
               </button>
               <button 
                 className="edit-card-btn primary"
-                onClick={() => setEditingCard(null)}
+                onClick={() => { setEditingCard(null); setEditingGoalIndex(null); }}
               >
                 Done
               </button>

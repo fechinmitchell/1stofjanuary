@@ -1391,7 +1391,7 @@
   .edit-goal-item {
     display: flex;
     align-items: center;
-    gap: var(--space-md);
+    gap: var(--space-sm);
     padding: var(--space-md);
     background: white;
     border: 1px solid rgba(0, 0, 0, 0.05);
@@ -1419,22 +1419,52 @@
     font-size: 1rem;
     color: var(--text-dark);
     font-family: var(--font-handwritten);
+    cursor: pointer;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-md);
+    transition: background var(--transition-fast);
   }
 
-  .edit-goal-visibility {
+  .edit-goal-text:hover {
+    background: var(--bg-light);
+  }
+
+  .edit-goal-input {
+    flex: 1;
+    font-size: 1rem;
+    color: var(--text-dark);
+    font-family: var(--font-handwritten);
+    padding: var(--space-xs) var(--space-sm);
+    border: 2px solid var(--coral);
+    border-radius: var(--radius-md);
+    background: white;
+    outline: none;
+  }
+
+  .edit-goal-actions {
+    display: flex;
+    gap: 4px;
+  }
+
+  .edit-goal-btn {
     background: none;
     border: none;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     cursor: pointer;
-    padding: var(--space-xs);
+    padding: 6px;
     border-radius: 50%;
     transition: all var(--transition-fast);
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
-  .edit-goal-visibility:hover {
+  .edit-goal-btn:hover {
     opacity: 1;
     transform: scale(1.1);
+    background: var(--bg-light);
+  }
+
+  .edit-goal-btn.delete:hover {
+    background: rgba(255, 107, 107, 0.1);
   }
 
   .edit-card-actions {
