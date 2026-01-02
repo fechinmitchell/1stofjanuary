@@ -1346,6 +1346,140 @@
   .delete-confirm-content {
     text-align: center;
   }
+
+  /* Edit Card Modal */
+  .edit-card-modal {
+    max-width: 500px;
+    text-align: left;
+  }
+
+  .edit-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-sm);
+  }
+
+  .edit-card-icon {
+    font-size: 2.5rem;
+  }
+
+  .edit-card-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-dark);
+  }
+
+  .edit-card-hint {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-bottom: var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-light);
+    border-radius: var(--radius-md);
+  }
+
+  .edit-card-goals {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: var(--space-lg);
+  }
+
+  .edit-goal-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-fast);
+  }
+
+  .edit-goal-item:hover {
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .edit-goal-item.hidden-item {
+    background: rgba(255, 107, 107, 0.05);
+    border-color: rgba(255, 107, 107, 0.2);
+  }
+
+  .edit-goal-item.hidden-item .edit-goal-text {
+    color: var(--text-light);
+    text-decoration: line-through;
+  }
+
+  .edit-goal-text {
+    flex: 1;
+    font-size: 1rem;
+    color: var(--text-dark);
+    font-family: var(--font-handwritten);
+  }
+
+  .edit-goal-visibility {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: var(--space-xs);
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+    opacity: 0.6;
+  }
+
+  .edit-goal-visibility:hover {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  .edit-card-actions {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .edit-card-btn {
+    flex: 1;
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: none;
+  }
+
+  .edit-card-btn.primary {
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.95) 0%, rgba(167, 139, 250, 0.95) 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.25);
+  }
+
+  .edit-card-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.35);
+  }
+
+  .edit-card-btn.secondary {
+    background: var(--bg-light);
+    color: var(--text-dark);
+  }
+
+  .edit-card-btn.secondary:hover {
+    background: rgba(0, 0, 0, 0.08);
+  }
+
+  /* Blurred Goals */
+  .goal-list li.blurred {
+    filter: blur(6px);
+    user-select: none;
+    pointer-events: none;
+    transition: filter 0.3s ease;
+  }
   
   /* ==================== */
   /* RESPONSIVE - TABLET  */

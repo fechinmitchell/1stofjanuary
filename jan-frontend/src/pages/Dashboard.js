@@ -36,6 +36,9 @@ const Dashboard = () => {
   const [activeYear, setActiveYear] = useState(2026);
   const [visibleCards, setVisibleCards] = useState([]);
   const [expandedCards, setExpandedCards] = useState(false);
+  const [editingCard, setEditingCard] = useState(null);
+  const [hiddenGoals, setHiddenGoals] = useState({});
+  const [blurHidden, setBlurHidden] = useState(false);
 
   const firstName = user?.displayName?.split(' ')[0] || 'friend';
   const CONFIRM_PHRASE = "I'm starting fresh";
@@ -182,6 +185,32 @@ const Dashboard = () => {
     }
   };
 
+  const handleCardClick = (section) => {
+    const items = answers[section.key] || [];
+    if (items.length > 0) {
+      setEditingCard(section);
+    }
+  };
+
+  const toggleGoalHidden = (sectionKey, goalIndex) => {
+    setHiddenGoals(prev => {
+      const key = `${sectionKey}-${goalIndex}`;
+      const newHidden = { ...prev };
+      if (newHidden[key]) {
+        delete newHidden[key];
+      } else {
+        newHidden[key] = true;
+      }
+      return newHidden;
+    });
+  };
+
+  const isGoalHidden = (sectionKey, goalIndex) => {
+    return hiddenGoals[`${sectionKey}-${goalIndex}`] || false;
+  };
+
+  const hasHiddenGoals = Object.keys(hiddenGoals).length > 0;
+
   const handleShareClick = () => {
     if (totalItems > 0) {
       setShowShareCard(true);
@@ -320,6 +349,15 @@ const Dashboard = () => {
             >
               {expandedCards ? '📖' : '📕'}
             </button>
+            {hasHiddenGoals && (
+              <button 
+                className={`dashboard-icon-btn ${blurHidden ? 'active' : ''}`}
+                onClick={() => setBlurHidden(!blurHidden)}
+                title={blurHidden ? "Show Hidden Goals" : "Blur Hidden Goals"}
+              >
+                {blurHidden ? '🙈' : '👁️'}
+              </button>
+            )}
             <button 
               className="dashboard-icon-btn" 
               onClick={() => setShowSettingsModal(true)}
@@ -431,6 +469,7 @@ const Dashboard = () => {
                 key={section.key}
                 className={`goal-card ${section.color} ${isVisible ? 'visible' : ''} ${expandedCards ? 'expanded' : ''}`}
                 style={{ '--delay': `${index * 0.08}s` }}
+                onClick={() => handleCardClick(section)}
               >
                 <div className="goal-card-header">
                   <span className="goal-card-icon">{section.icon}</span>
@@ -441,12 +480,15 @@ const Dashboard = () => {
                   {hasItems ? (
                     <ul className="goal-list">
                       {items.map((item, idx) => (
-                        <li key={idx} className={idx >= 5 ? 'hidden-goal' : ''}>
+                        <li 
+                          key={idx} 
+                          className={`${idx >= 5 ? 'hidden-goal' : ''} ${blurHidden && isGoalHidden(section.key, idx) ? 'blurred' : ''}`}
+                        >
                           {item}
                         </li>
                       ))}
                       {items.length > 5 && (
-                        <li className="goal-more">+{items.length - 5} more (hover to see all)</li>
+                        <li className="goal-more">+{items.length - 5} more</li>
                       )}
                     </ul>
                   ) : (
@@ -454,7 +496,7 @@ const Dashboard = () => {
                   )}
                 </div>
                 {!hasItems && (
-                  <button className="goal-add-btn" onClick={handleStartWizard}>
+                  <button className="goal-add-btn" onClick={(e) => { e.stopPropagation(); handleStartWizard(); }}>
                     + Add Goals
                   </button>
                 )}
@@ -773,6 +815,60 @@ const Dashboard = () => {
             >
               🚀 Let's Get Started
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Card Modal */}
+      {editingCard && (
+        <div className="modal-overlay" onClick={() => setEditingCard(null)}>
+          <div className="modal-content glass-modal edit-card-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setEditingCard(null)}>×</button>
+            
+            <div className="edit-card-header">
+              <span className="edit-card-icon">{editingCard.icon}</span>
+              <h2 className="edit-card-title">{editingCard.title}</h2>
+            </div>
+            
+            <p className="edit-card-hint">
+              👁️ Click the eye to hide goals when sharing
+            </p>
+            
+            <div className="edit-card-goals">
+              {(answers[editingCard.key] || []).map((item, idx) => (
+                <div 
+                  key={idx} 
+                  className={`edit-goal-item ${isGoalHidden(editingCard.key, idx) ? 'hidden-item' : ''}`}
+                >
+                  <span className="edit-goal-text">{item}</span>
+                  <button 
+                    className="edit-goal-visibility"
+                    onClick={() => toggleGoalHidden(editingCard.key, idx)}
+                    title={isGoalHidden(editingCard.key, idx) ? "Show this goal" : "Hide this goal"}
+                  >
+                    {isGoalHidden(editingCard.key, idx) ? '🙈' : '👁️'}
+                  </button>
+                </div>
+              ))}
+            </div>
+            
+            <div className="edit-card-actions">
+              <button 
+                className="edit-card-btn secondary"
+                onClick={() => {
+                  setEditingCard(null);
+                  handleStartWizard();
+                }}
+              >
+                ✏️ Edit in Wizard
+              </button>
+              <button 
+                className="edit-card-btn primary"
+                onClick={() => setEditingCard(null)}
+              >
+                Done
+              </button>
+            </div>
           </div>
         </div>
       )}
