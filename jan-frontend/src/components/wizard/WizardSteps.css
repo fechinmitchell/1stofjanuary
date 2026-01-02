@@ -12,6 +12,9 @@
     text-align: center;
     max-width: 600px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   /* ============================== */
@@ -19,13 +22,15 @@
   /* ============================== */
   .step-emoji-wrapper {
     position: relative;
-    display: inline-block;
+    display: block;
+    width: 100%;
     margin-bottom: var(--space-md);
+    text-align: center;
   }
   
   .step-emoji {
     font-size: 4rem;
-    display: block;
+    display: inline-block;
     animation: gentleFloat 4s ease-in-out infinite;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
   }
@@ -37,8 +42,9 @@
   
   .step-emoji-badge {
     position: absolute;
-    top: -4px;
-    right: -8px;
+    top: 0;
+    left: 50%;
+    margin-left: 28px;
     background: linear-gradient(135deg, var(--coral) 0%, var(--lavender) 100%);
     color: white;
     font-size: 0.8rem;
@@ -71,6 +77,7 @@
     color: var(--text-dark);
     animation: fadeSlideIn 0.6s ease;
     line-height: 1.4;
+    max-width: 100%;
   }
   
   @keyframes fadeSlideIn {
@@ -104,6 +111,10 @@
     border: 1px solid rgba(251, 191, 36, 0.4);
   }
   
+  .step-question-badge.settled {
+    transform: translateY(0);
+  }
+  
   .badge-text {
     display: block;
   }
@@ -118,6 +129,7 @@
     justify-content: center;
     margin-bottom: var(--space-lg);
     min-height: 44px;
+    width: 100%;
   }
   
   .step-selected-item {
@@ -169,6 +181,7 @@
     gap: var(--space-sm);
     margin-bottom: var(--space-md);
     align-items: center;
+    width: 100%;
   }
   
   .step-input-main {
@@ -227,6 +240,7 @@
     margin-bottom: var(--space-lg);
     font-style: italic;
     opacity: 0.9;
+    width: 100%;
   }
   
   /* ============================== */
@@ -234,6 +248,7 @@
   /* ============================== */
   .step-suggestions {
     margin-bottom: var(--space-xl);
+    width: 100%;
   }
   
   .step-suggestions-label {
@@ -361,6 +376,7 @@
     padding: var(--space-md);
     text-align: left;
     box-shadow: 0 2px 10px rgba(251, 191, 36, 0.1);
+    width: 100%;
   }
   
   .step-insight-icon {
@@ -414,6 +430,7 @@
     align-items: center;
     gap: var(--space-md);
     margin-top: var(--space-lg);
+    width: 100%;
   }
   
   .step-nav-back {
@@ -491,6 +508,9 @@
   
   .transition-content {
     animation: transitionFadeIn 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   @keyframes transitionFadeIn {
@@ -538,6 +558,9 @@
   .welcome-step {
     text-align: center;
     padding: var(--space-lg) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .welcome-icon {
@@ -562,8 +585,6 @@
     margin-bottom: var(--space-xl);
     line-height: 1.6;
     max-width: 450px;
-    margin-left: auto;
-    margin-right: auto;
   }
   
   .welcome-btn {
@@ -590,6 +611,9 @@
   .celebration-step {
     text-align: center;
     padding: var(--space-lg) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .celebration-icon {
@@ -643,6 +667,9 @@
   .vision-transition-step {
     text-align: center;
     padding: var(--space-lg) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .vision-icon {
@@ -691,6 +718,9 @@
   .goals-transition-step {
     text-align: center;
     padding: var(--space-lg) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .goals-transition-icon {
@@ -739,6 +769,9 @@
   .final-celebration {
     text-align: center;
     padding: var(--space-lg) 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   .final-icon {
@@ -823,6 +856,9 @@
     background: transparent;
     padding: var(--space-lg);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   
   /* ================================================ */
@@ -835,6 +871,10 @@
     
     .step-emoji {
       font-size: 3.5rem;
+    }
+    
+    .step-emoji-badge {
+      margin-left: 22px;
     }
     
     .step-question-badge {
@@ -868,12 +908,10 @@
   /* RESPONSIVE - MOBILE (max-width: 768px)           */
   /* ================================================ */
   @media (max-width: 768px) {
-    /* Container */
     .step-container {
       padding: var(--space-sm);
     }
     
-    /* Emoji */
     .step-emoji-wrapper {
       margin-bottom: var(--space-sm);
     }
@@ -886,18 +924,15 @@
       min-width: 22px;
       height: 22px;
       font-size: 0.7rem;
-      top: -2px;
-      right: -6px;
+      margin-left: 18px;
     }
     
-    /* Question Badge */
     .step-question-badge {
       font-size: 0.95rem;
       padding: 8px 16px;
       margin-bottom: var(--space-md);
     }
     
-    /* Selected Items */
     .step-selected {
       gap: 8px;
       margin-bottom: var(--space-md);
@@ -908,7 +943,6 @@
       padding: 6px 12px;
     }
     
-    /* Input Row */
     .step-input-row {
       flex-direction: column;
       gap: 10px;
@@ -917,7 +951,7 @@
     .step-input-main {
       width: 100%;
       padding: 14px 18px;
-      font-size: 16px; /* Prevents iOS zoom */
+      font-size: 16px;
     }
     
     .step-add-btn {
@@ -925,7 +959,6 @@
       padding: 14px 20px;
     }
     
-    /* Hints */
     .step-hint {
       font-size: 0.85rem;
       margin-bottom: var(--space-md);
@@ -935,7 +968,6 @@
       font-size: 0.8rem;
     }
     
-    /* Chips */
     .step-chips {
       gap: 6px;
     }
@@ -949,13 +981,11 @@
       font-size: 0.85rem;
     }
     
-    /* Main Button */
     .step-button {
       padding: 14px 24px;
       font-size: 1rem;
     }
     
-    /* Insight */
     .step-insight {
       padding: 12px;
     }
@@ -968,14 +998,12 @@
       font-size: 0.82rem;
     }
     
-    /* Textarea */
     .step-textarea {
       min-height: 120px;
-      font-size: 16px; /* Prevents iOS zoom */
+      font-size: 16px;
       padding: 14px;
     }
     
-    /* Navigation */
     .step-nav {
       flex-direction: column-reverse;
       gap: 10px;
@@ -996,7 +1024,6 @@
       padding: 14px;
     }
     
-    /* Transition */
     .transition-message {
       padding: var(--space-lg);
     }
@@ -1013,7 +1040,6 @@
       font-size: 0.95rem;
     }
     
-    /* Welcome */
     .welcome-icon {
       font-size: 3.5rem;
       margin-bottom: var(--space-md);
@@ -1033,7 +1059,6 @@
       font-size: 1rem;
     }
     
-    /* Celebration */
     .celebration-icon {
       font-size: 3.5rem;
     }
@@ -1052,7 +1077,6 @@
       font-size: 1rem;
     }
     
-    /* Vision */
     .vision-icon {
       font-size: 3.5rem;
     }
@@ -1071,7 +1095,6 @@
       font-size: 1rem;
     }
     
-    /* Goals Transition */
     .goals-transition-icon {
       font-size: 3.5rem;
     }
@@ -1090,7 +1113,6 @@
       font-size: 1rem;
     }
     
-    /* Final */
     .final-icon {
       font-size: 3.5rem;
     }
@@ -1132,6 +1154,13 @@
     
     .step-emoji {
       font-size: 2.5rem;
+    }
+    
+    .step-emoji-badge {
+      margin-left: 14px;
+      min-width: 20px;
+      height: 20px;
+      font-size: 0.65rem;
     }
     
     .step-question-badge {
@@ -1194,6 +1223,13 @@
     
     .step-emoji {
       font-size: 2rem;
+    }
+    
+    .step-emoji-badge {
+      margin-left: 12px;
+      min-width: 18px;
+      height: 18px;
+      font-size: 0.6rem;
     }
     
     .step-question-badge {
@@ -1333,6 +1369,10 @@
     
     .step-emoji {
       font-size: 4.5rem;
+    }
+    
+    .step-emoji-badge {
+      margin-left: 30px;
     }
     
     .step-question-badge {
