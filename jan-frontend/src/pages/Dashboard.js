@@ -327,8 +327,8 @@ const Dashboard = () => {
         </div>
       </header>
 
-      {/* Continue Wizard Banner - Shows when wizard is in progress */}
-      {wizardInProgress && (
+      {/* Continue Wizard Banner - Only shows if wizard started but no goals saved yet */}
+      {wizardInProgress && totalItems === 0 && (
         <div className="continue-wizard-banner">
           <div className="continue-wizard-content">
             <div className="continue-wizard-info">
@@ -393,17 +393,20 @@ const Dashboard = () => {
               : 'Start building your vision for the year ahead'
             }
           </p>
-          <div className="hero-buttons">
-            {totalItems === 0 ? (
-              <button className="hero-btn primary" onClick={handleStartWizard}>
-                🚀 Get Started
-              </button>
-            ) : wizardInProgress ? (
-              <button className="hero-btn primary" onClick={handleContinueWizard}>
-                ✨ Continue Wizard ({progressPercent}%)
-              </button>
-            ) : null}
-          </div>
+          {/* Only show buttons if user has no goals yet */}
+          {totalItems === 0 && (
+            <div className="hero-buttons">
+              {wizardInProgress ? (
+                <button className="hero-btn primary" onClick={handleContinueWizard}>
+                  ✨ Continue Wizard ({progressPercent}%)
+                </button>
+              ) : (
+                <button className="hero-btn primary" onClick={handleStartWizard}>
+                  🚀 Get Started
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
