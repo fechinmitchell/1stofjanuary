@@ -319,8 +319,9 @@ const Dashboard = () => {
             >
               ⚙️
             </button>
-            <button className="dashboard-logout" onClick={handleLogout}>
-              Log out
+            <button className="dashboard-logout-btn" onClick={handleLogout}>
+              <span>🚪</span>
+              <span>Log out</span>
             </button>
           </div>
         </div>

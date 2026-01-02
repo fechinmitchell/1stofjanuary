@@ -143,14 +143,36 @@
     color: var(--text-dark);
   }
   
-  .dashboard-logout {
+  .dashboard-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius-full);
     color: var(--text-medium);
     font-weight: 500;
-    transition: color var(--transition-fast);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
   }
   
-  .dashboard-logout:hover {
+  .dashboard-logout-btn:hover {
+    background: rgba(255, 107, 107, 0.1);
+    border-color: rgba(255, 107, 107, 0.3);
     color: var(--coral);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.15);
+  }
+  
+  .dashboard-logout-btn span:first-child {
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+  }
+  
+  .dashboard-logout-btn:hover span:first-child {
+    transform: translateX(2px);
   }
   
   /* Icon Buttons (Edit, Settings) */
@@ -1367,8 +1389,17 @@
       display: none;
     }
     
-    .dashboard-logout {
-      font-size: 0.85rem;
+    .dashboard-logout-btn {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+    
+    .dashboard-logout-btn span:last-child {
+      display: none;
+    }
+    
+    .dashboard-logout-btn span:first-child {
+      font-size: 1.1rem;
     }
 
     /* Continue Wizard Banner - Mobile */
