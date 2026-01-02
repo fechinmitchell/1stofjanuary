@@ -306,7 +306,14 @@ const Dashboard = () => {
             {isSaving && <span className="saving-indicator">💾 Saving...</span>}
             <span className="dashboard-user-name">Hey, {firstName}!</span>
             <button 
-              className="dashboard-settings-btn" 
+              className="dashboard-icon-btn" 
+              onClick={handleStartWizard}
+              title="Edit Goals"
+            >
+              ✏️
+            </button>
+            <button 
+              className="dashboard-icon-btn" 
               onClick={() => setShowSettingsModal(true)}
               title="Settings"
             >
@@ -390,18 +397,11 @@ const Dashboard = () => {
               <button className="hero-btn primary" onClick={handleStartWizard}>
                 🚀 Get Started
               </button>
-            ) : (
-              <>
-                <button className="hero-btn primary" onClick={handleStartWizard}>
-                  ✏️ Edit Goals
-                </button>
-                {wizardInProgress && (
-                  <button className="hero-btn secondary" onClick={handleContinueWizard}>
-                    Continue Wizard ({progressPercent}%)
-                  </button>
-                )}
-              </>
-            )}
+            ) : wizardInProgress ? (
+              <button className="hero-btn primary" onClick={handleContinueWizard}>
+                ✨ Continue Wizard ({progressPercent}%)
+              </button>
+            ) : null}
           </div>
         </div>
       </div>
