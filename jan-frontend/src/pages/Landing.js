@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { getGoals, getCapacityStatus } from '../services/api';
 import './Landing.css';
 
 const Landing = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { user, loading, loginWithGoogle } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);

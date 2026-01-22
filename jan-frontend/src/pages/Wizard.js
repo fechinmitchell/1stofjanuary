@@ -252,7 +252,7 @@ const sections = [
 ];
 
 const WizardContent = () => {
-  const { currentStep, goToStep, answers, hasGoals } = useWizard();
+  const { currentStep, goToStep, hasGoals } = useWizard();
   const navigate = useNavigate();
   const [showTransition, setShowTransition] = useState(false);
   const [lastStep, setLastStep] = useState(-1);
