@@ -1,0 +1,292 @@
+.waitlist {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-lg);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #FFF6F0 0%, #F0F9FF 50%, #F5F0FF 100%);
+  }
+  
+  .waitlist-content {
+    text-align: center;
+    max-width: 500px;
+    z-index: 1;
+    padding: var(--space-md);
+  }
+  
+  .waitlist-icon {
+    font-size: 4rem;
+    margin-bottom: var(--space-lg);
+    animation: bounce 2s ease-in-out infinite;
+  }
+  
+  .waitlist-icon.success {
+    animation: celebrate 0.6s ease-out;
+  }
+  
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes celebrate {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  
+  .waitlist-title {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: var(--space-md);
+  }
+  
+  .waitlist-subtitle {
+    font-size: clamp(1rem, 3vw, 1.125rem);
+    color: var(--text-medium);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+  }
+  
+  .waitlist-highlight {
+    color: var(--text-dark);
+    font-weight: 600;
+  }
+  
+  .waitlist-count {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-xl);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+  
+  .waitlist-count-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: var(--gradient-sunset);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .waitlist-count-text {
+    color: var(--text-medium);
+    font-weight: 500;
+  }
+  
+  .waitlist-form {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .waitlist-input-group {
+    display: flex;
+    gap: var(--space-sm);
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .waitlist-input {
+    flex: 1;
+    padding: var(--space-md) var(--space-lg);
+    font-size: 1rem;
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius-full);
+    background: white;
+    transition: all var(--transition-fast);
+  }
+  
+  .waitlist-input:focus {
+    outline: none;
+    border-color: var(--mint);
+    box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.15);
+  }
+  
+  .waitlist-submit {
+    padding: var(--space-md) var(--space-xl);
+    background: var(--gradient-sunset);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+  }
+  
+  .waitlist-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.35);
+  }
+  
+  .waitlist-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .waitlist-error {
+    color: var(--coral);
+    font-size: 0.9rem;
+    margin-top: var(--space-sm);
+  }
+  
+  .waitlist-promise {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin-bottom: var(--space-lg);
+  }
+  
+  /* Success State */
+  .waitlist-position {
+    font-size: 1.25rem;
+    color: var(--text-medium);
+    margin-bottom: var(--space-lg);
+  }
+  
+  .position-number {
+    font-size: 2rem;
+    font-weight: 800;
+    background: var(--gradient-cool);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .waitlist-share {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    padding: var(--space-lg);
+    border-radius: var(--radius-xl);
+    margin: var(--space-xl) 0;
+  }
+  
+  .waitlist-share p {
+    color: var(--text-medium);
+    margin-bottom: var(--space-md);
+  }
+  
+  .waitlist-share-btn {
+    background: var(--bg-light);
+    color: var(--text-dark);
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    transition: all var(--transition-fast);
+  }
+  
+  .waitlist-share-btn:hover {
+    background: var(--mint);
+    color: white;
+  }
+  
+  .waitlist-home-btn {
+    background: transparent;
+    color: var(--text-medium);
+    padding: var(--space-sm) var(--space-lg);
+    font-weight: 600;
+    transition: all var(--transition-fast);
+  }
+  
+  .waitlist-home-btn:hover {
+    color: var(--text-dark);
+  }
+  
+  /* Background Shapes */
+  .waitlist-shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  
+  .waitlist .shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.5;
+    filter: blur(60px);
+  }
+  
+  .waitlist .shape-1 {
+    width: 300px;
+    height: 300px;
+    background: var(--lavender);
+    top: -100px;
+    right: -50px;
+    animation: drift1 25s linear infinite;
+  }
+  
+  .waitlist .shape-2 {
+    width: 250px;
+    height: 250px;
+    background: var(--mint);
+    bottom: -50px;
+    left: -50px;
+    animation: drift2 30s linear infinite;
+  }
+  
+  .waitlist .shape-3 {
+    width: 200px;
+    height: 200px;
+    background: var(--sunshine);
+    top: 50%;
+    left: 50%;
+    animation: drift3 28s linear infinite;
+  }
+  
+  @keyframes drift1 {
+    0% { top: -10%; right: -10%; }
+    50% { top: 60%; right: 70%; }
+    100% { top: -10%; right: -10%; }
+  }
+  
+  @keyframes drift2 {
+    0% { bottom: -10%; left: -10%; }
+    50% { bottom: 50%; left: 60%; }
+    100% { bottom: -10%; left: -10%; }
+  }
+  
+  @keyframes drift3 {
+    0% { top: 50%; left: 50%; }
+    50% { top: 10%; left: 10%; }
+    100% { top: 50%; left: 50%; }
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .waitlist {
+      padding: var(--space-md);
+    }
+  
+    .waitlist-input-group {
+      flex-direction: column;
+    }
+  
+    .waitlist-input,
+    .waitlist-submit {
+      width: 100%;
+    }
+  
+    .waitlist-icon {
+      font-size: 3rem;
+    }
+  
+    .waitlist .shape-1 {
+      width: 200px;
+      height: 200px;
+    }
+  
+    .waitlist .shape-2 {
+      width: 180px;
+      height: 180px;
+    }
+  
+    .waitlist .shape-3 {
+      width: 150px;
+      height: 150px;
+    }
+  }

@@ -1,14 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getGoals } from '../services/api';
+import { getGoals, getCapacityStatus } from '../services/api';
 import './Landing.css';
 
 const Landing = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, loading, loginWithGoogle } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [capacityStatus, setCapacityStatus] = useState(null);
+  const [checkingCapacity, setCheckingCapacity] = useState(true);
+
+  // Check capacity on mount
+  useEffect(() => {
+    const checkCapacity = async () => {
+      try {
+        const status = await getCapacityStatus();
+        setCapacityStatus(status);
+      } catch (error) {
+        console.log('Could not check capacity, assuming open');
+        setCapacityStatus({ hasCapacity: true });
+      }
+      setCheckingCapacity(false);
+    };
+
+    checkCapacity();
+  }, []);
 
   // If already logged in, redirect appropriately
   useEffect(() => {
@@ -27,6 +46,11 @@ const Landing = () => {
             navigate('/wizard');
           }
         } catch (error) {
+          // Check if it's a capacity error
+          if (error.isCapacityFull) {
+            navigate('/waitlist');
+            return;
+          }
           // If can't check cloud, go to wizard
           navigate('/wizard');
         }
@@ -37,6 +61,11 @@ const Landing = () => {
   }, [user, loading, navigate]);
 
   const handleGetStarted = () => {
+    // If no capacity, go straight to waitlist
+    if (capacityStatus && !capacityStatus.hasCapacity) {
+      navigate('/waitlist');
+      return;
+    }
     setShowAuthModal(true);
   };
 
@@ -47,13 +76,20 @@ const Landing = () => {
       // The useEffect above will handle navigation after login
     } catch (error) {
       console.error('Login error:', error);
+      
+      // Check if it's a capacity error
+      if (error.isCapacityFull || error.message?.includes('capacity')) {
+        navigate('/waitlist');
+        return;
+      }
+      
       alert('Login failed. Please try again.');
       setIsLoggingIn(false);
     }
   };
 
-  // Show loading while checking auth state
-  if (loading) {
+  // Show loading while checking auth state or capacity
+  if (loading || checkingCapacity) {
     return (
       <div className="landing">
         <div className="landing-content">
@@ -64,10 +100,27 @@ const Landing = () => {
     );
   }
 
+  // Capacity badge text
+  const getCapacityBadge = () => {
+    if (!capacityStatus) return null;
+    
+    switch (capacityStatus.capacityStatus) {
+      case 'almost_full':
+        return <span className="capacity-badge warning">🔥 Only a few spots left!</span>;
+      case 'limited':
+        return <span className="capacity-badge limited">⚡ Limited spots available</span>;
+      case 'full':
+        return <span className="capacity-badge full">😢 Currently at capacity</span>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="landing">
       <div className="landing-content">
         <span className="landing-badge">✨ New Year, New Plans</span>
+        {getCapacityBadge()}
         <h1 className="landing-title">
           2026 is going to be <span className="highlight">your year</span>
         </h1>
@@ -78,7 +131,9 @@ const Landing = () => {
           className="landing-cta"
           onClick={handleGetStarted}
         >
-          Let's Plan 2026 →
+          {capacityStatus?.hasCapacity === false 
+            ? 'Join the Waitlist →' 
+            : "Let's Plan 2026 →"}
         </button>
         <p className="landing-hint">
           Fun, easy, and actually useful. Promise.
@@ -101,6 +156,12 @@ const Landing = () => {
             <p className="auth-modal-subtitle">
               Sign in so your goals are safe and waiting for you ✨
             </p>
+
+            {capacityStatus?.capacityStatus === 'almost_full' && (
+              <div className="auth-capacity-warning">
+                🔥 Hurry! Only a few spots left
+              </div>
+            )}
 
             <button 
               className="auth-google-btn"
