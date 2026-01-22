@@ -33,10 +33,12 @@ app.use(express.json());
 const authRoutes = require('./routes/auth');
 const goalsRoutes = require('./routes/goals');
 const notifyRoutes = require('./routes/notify');
+const capacityRoutes = require('./routes/capacity');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/goals', goalsRoutes);
 app.use('/api/notify', notifyRoutes);
+app.use('/api/capacity', capacityRoutes);
 
 // Health check
 app.get('/', (req, res) => {
