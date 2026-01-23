@@ -252,11 +252,12 @@ const sections = [
 ];
 
 const WizardContent = () => {
-  const { currentStep, goToStep, hasGoals } = useWizard();
+  const { currentStep, goToStep, wizardComplete, progressPercent } = useWizard();
   const navigate = useNavigate();
   const [showTransition, setShowTransition] = useState(false);
   const [lastStep, setLastStep] = useState(-1);
   const [showProgress, setShowProgress] = useState(false);
+  const [showDashboardWarning, setShowDashboardWarning] = useState(false);
 
   // Track highest step visited for navigation
   const [highestVisited, setHighestVisited] = useState(0);
@@ -307,19 +308,34 @@ const WizardContent = () => {
   // Get current section
   const currentSection = sections.find(s => s.id === currentStepData.section);
 
+  // Handle dashboard button click
+  const handleDashboardClick = () => {
+    if (wizardComplete) {
+      // Wizard is complete, go straight to dashboard
+      navigate('/dashboard');
+    } else {
+      // Wizard not complete, show warning
+      setShowDashboardWarning(true);
+    }
+  };
+
   return (
     <div className="wizard">
       {/* Header with progress */}
       <header className="wizard-header">
-        <button 
-          className="wizard-home-btn"
-          onClick={() => navigate('/')}
-          title="Back to home"
-        >
-          <span className="wizard-home-icon">🏠</span>
-          <span className="wizard-home-text">Home</span>
-        </button>
+        {/* Left section - always takes up space for balance */}
+        <div className="wizard-header-left">
+          <button 
+            className="wizard-home-btn"
+            onClick={() => navigate('/')}
+            title="Back to home"
+          >
+            <span className="wizard-home-icon">🏠</span>
+            <span className="wizard-home-text">Home</span>
+          </button>
+        </div>
 
+        {/* Center section - progress */}
         <div className="wizard-progress-container">
           <button 
             className="wizard-progress-toggle"
@@ -347,17 +363,63 @@ const WizardContent = () => {
           </div>
         </div>
 
-        {hasGoals && (
+        {/* Right section - always visible dashboard button */}
+        <div className="wizard-header-right">
           <button 
-            className="wizard-dashboard-btn"
-            onClick={() => navigate('/dashboard')}
+            className={`wizard-dashboard-btn ${!wizardComplete ? 'incomplete' : ''}`}
+            onClick={handleDashboardClick}
             title="Go to dashboard"
           >
             <span className="wizard-dashboard-icon">📊</span>
             <span className="wizard-dashboard-text">Dashboard</span>
           </button>
-        )}
+        </div>
       </header>
+
+      {/* Dashboard Warning Modal */}
+      <AnimatePresence>
+        {showDashboardWarning && (
+          <motion.div 
+            className="wizard-warning-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowDashboardWarning(false)}
+          >
+            <motion.div 
+              className="wizard-warning-modal"
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="wizard-warning-icon">⚠️</div>
+              <h3 className="wizard-warning-title">You're not done yet!</h3>
+              <p className="wizard-warning-text">
+                You've completed <strong>{progressPercent}%</strong> of the wizard. 
+                Your dashboard will look a bit empty without finishing all the steps.
+              </p>
+              <p className="wizard-warning-subtext">
+                The magic happens when you complete the full journey! ✨
+              </p>
+              <div className="wizard-warning-buttons">
+                <button 
+                  className="wizard-warning-btn secondary"
+                  onClick={() => navigate('/dashboard')}
+                >
+                  Go anyway →
+                </button>
+                <button 
+                  className="wizard-warning-btn primary"
+                  onClick={() => setShowDashboardWarning(false)}
+                >
+                  Keep going 💪
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Expanded progress panel */}
       <AnimatePresence>
